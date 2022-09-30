@@ -1,0 +1,34 @@
+.Login{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-image: url("../image/hotel-gb468be24c_1920.jpg");
+    background-size: cover;
+}
+.Login__form{
+    width: auto;
+    max-width: 500px;
+    min-width: 350px;
+    height: auto;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    padding: 30px;
+}
+.Login__form_img{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.login__submit{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+.btn-submit,
+.btn-register{
+   width: 49%;
+}

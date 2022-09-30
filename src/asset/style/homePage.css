@@ -1,0 +1,28 @@
+.homePage{
+    height: 100%;
+    width: 100%;
+    padding-top: 20px;
+    background-color: var(--background);
+}
+.search{
+    margin-right: 10px;
+}
+.search__input::placeholder{
+    color: rgb(180, 177, 177);
+}
+.homePage__search{
+    display: flex;
+    justify-content: center;
+}
+.p-dropdown{
+    margin-bottom: 5px;
+}
+.p-dropdown .p-placeholder{
+    color: rgb(180, 177, 177) !important;
+}
+.p-dropdown .p-dropdown-label {
+    color: black ;
+}
+.p-dropdown .p-dropdown-trigger-icon{
+    color: rgb(180, 177, 177);
+}
