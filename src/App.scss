@@ -1,12 +1,19 @@
 /*@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@450&display=swap');
 @import './asset/style/variables';
-:root{
+
+:root {
   --c1: #6acb2c;
-  --bs-btn-bg: #2995ce;
+  --bs-btn-bg: #43b4f1;
   --hover: #afb3bc;
   --background: #f3f4f5;
   --background2: #f9fafa;
+  --yellow: #efd201;
+  --white: #fff;
+  --shape: rgb(215, 218, 219);
+}
+*{
+  font-family:  Roboto;
 }
 html,
 body {
@@ -14,20 +21,14 @@ body {
   padding: 0;
   height: 100%;
 }
-*{
+
+* {
   margin: 0;
-  padding: 0;   
+  padding: 0;
 }
-@media (min-width: 1400px){
-.container {
+
+@media (min-width: 1400px) {
+  .container {
     max-width: 100%;
-}}
-.button{
-    background-color: var(--c2);
-    padding: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s;
   }
-
-
+}

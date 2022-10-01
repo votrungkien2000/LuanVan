@@ -73,7 +73,7 @@ function HomePage() {
                     <h5 style={{ fontSize: "1rem" }}>Giá mỗi đêm:[{`${price[0]} $`}, {`${price[1]} $`}]</h5>
                     <Slider min={0} max={500} value={price} onChange={(e) => setPrice(e.value)} range />
                 </div>
-                <Button style={{ borderRadius: "8px", height: "45px" }} label="Search" loading={loading} onClick={onLoadingClick} />
+                <Button style={{border: "1px solid var(--hover)", borderRadius: "8px", height: "45px", backgroundColor:"var(--bs-btn-bg)", fontWeight: "500" }} label="Search" loading={loading} onClick={onLoadingClick} />
             </div>
         <div className='homePage__body'>
             <Card/>
