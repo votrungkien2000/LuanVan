@@ -5,12 +5,13 @@
 :root {
   --c1: #6acb2c;
   --bs-btn-bg: #43b4f1;
-  --hover: #afb3bc;
+  --hover: #e8eaec;
   --background: #f3f4f5;
   --background2: #f9fafa;
   --yellow: #efd201;
   --white: #fff;
   --shape: rgb(215, 218, 219);
+  --red : #b30018
 }
 *{
   font-family:  Roboto;
@@ -26,7 +27,9 @@ body {
   margin: 0;
   padding: 0;
 }
-
+p {
+  margin: 0 !important;
+}
 @media (min-width: 1400px) {
   .container {
     max-width: 100%;

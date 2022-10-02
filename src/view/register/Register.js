@@ -2,18 +2,24 @@ import React from 'react';
 import "../../asset/style/login.css"
 import { useState } from 'react';
 import Logo from '../../asset/image/Focal Real.png'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
+    const [confimPassword, setconfimPassword] = useState('');
+    const [numberPhone, setNumberPhone] = useState('')
     const [error, setError] = useState({
         account: false,
-        password: false
+        numberPhone: false,
+        password: false,
+        confimPassword: false
     })
     const [notify, setNotify] = useState({
         account: "We'll never share your email with anyone else",
-        password: ""
+        password: "",
+        confimPassword: "",
+        numberPhone: ""
     })
     const validate = () => {
         let check = true;
@@ -24,7 +30,18 @@ function Login() {
             }))
             setNotify(prev => ({
                 ...prev,
-                account: "Please enter a password"
+                account: "Please enter a account"
+            }))
+            check = false
+        }
+        if (numberPhone === '') {
+            setError(prev => ({
+                ...prev,
+                numberPhone: true
+            }))
+            setNotify(prev => ({
+                ...prev,
+                numberPhone: "Please enter a number phone"
             }))
             check = false
         }
@@ -38,13 +55,25 @@ function Login() {
                 password: "Please enter a password"
             }))
             check = false
+        } 
+        if (confimPassword === '') {
+            setError(prev => ({
+                ...prev,
+                confimPassword: true
+            }))
+            setNotify(prev => ({
+                ...prev,
+                confimPassword: "Please enter a confirm password"
+            }))
+            check = false
         }
         return check
     }
-
+    const navigate = useNavigate()
     const handleSubmit = () => {
         if (validate()) {
-            console.log("submit thnah cong")
+            console.log("submit thanh cong")
+            navigate("/login")
         }
         else {
             console.log("that bai")
@@ -78,9 +107,27 @@ function Login() {
                         <div id="emailHelp" style={{ color: error.account ? "#f03f20" : "" }} className="form-text notify">{notify.account}</div>
                     </div>
                     <div className="mb-3">
+                        <input className="form-control" id="exampleInputPassword1"
+                            value={numberPhone}
+                            onChange={e => setNumberPhone(e.target.value)}
+                            placeholder="Number phone"
+                            onFocus={() => {
+                                setError(prev => ({
+                                    ...prev,
+                                    numberPhone: false
+                                }))
+                                setNotify(prev => ({
+                                    ...prev,
+                                    numberPhone: ""
+                                }))
+                            }}
+                        // inputprops={offAutoComplete}
+                        />
+                        <div id="emailHelp" style={{ color: error.numberPhone ? "#f03f20" : "" }} className="form-text notify">{notify.numberPhone}</div>
+                    </div>
+                    <div className="mb-3">
                         <input type="password" className="form-control" id="exampleInputPassword1"
                             value={password}
-                            autoComplete="new-password"
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Password"
                             onFocus={() => {
@@ -97,11 +144,27 @@ function Login() {
                         />
                         <div id="emailHelp" style={{ color: error.password ? "#f03f20" : "" }} className="form-text notify">{notify.password}</div>
                     </div>
-                    <div className="login__submit">
-                        <button onClick={handleSubmit} className="btn btn-primary btn-submit">Submit</button>
-                        <Link className='btn-register' to="/register">
-                            <button style={{width: "100%"}} className="btn btn-primary">Register</button>
-                        </Link>
+                    <div className="mb-3">
+                        <input type="password" className="form-control" id="exampleInputPassword1"
+                            value={confimPassword}
+                            onChange={e => setconfimPassword(e.target.value)}
+                            placeholder="Confrim Password"
+                            onFocus={() => {
+                                setError(prev => ({
+                                    ...prev,
+                                    confimPassword: false
+                                }))
+                                setNotify(prev => ({
+                                    ...prev,
+                                    confimPassword: ""
+                                }))
+                            }}
+                        // inputprops={offAutoComplete}
+                        />
+                        <div id="emailHelp" style={{ color: error.confimPassword ? "#f03f20" : "" }} className="form-text notify">{notify.confimPassword}</div>
+                    </div>
+                    <div className="login__submit form-register">
+                        <button onClick={handleSubmit} className="btn btn-primary btn-submit btn-form-register">Submit</button>
                     </div>
                 </div>
             </div>

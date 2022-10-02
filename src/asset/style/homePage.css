@@ -1,28 +1,59 @@
-.homePage{
+.homePage {
     height: 100%;
     width: 100%;
     padding-top: 20px;
     background-color: var(--background);
 }
-.search{
+
+.search {
     margin-right: 10px;
 }
-.search__input::placeholder{
+
+.search__input::placeholder {
     color: rgb(180, 177, 177);
 }
-.homePage__search{
+
+.homePage__search {
     display: flex;
     justify-content: center;
 }
-.p-dropdown{
+
+.p-dropdown {
     margin-bottom: 5px;
 }
-.p-dropdown .p-placeholder{
+
+.p-dropdown .p-placeholder {
     color: rgb(180, 177, 177) !important;
 }
+
 .p-dropdown .p-dropdown-label {
-    color: black ;
+    color: black;
 }
-.p-dropdown .p-dropdown-trigger-icon{
+
+.p-dropdown .p-dropdown-trigger-icon {
     color: rgb(180, 177, 177);
+}
+
+.homePage__body {
+    display: flex;
+}
+
+.homePage__body__hotel {
+    width: 50%;
+}
+
+/* map */
+.homePage__body_map {
+    width: 48%;
+    margin-top: 20px;
+    height: 93vh;
+    position: sticky;
+    top: 65px;
+}
+
+.homePage__body__map__item {
+    height: 100%;
+    /* background-image: url('../image/hotel-gb468be24c_1920.jpg'); */
+    background-size: cover;
+    top: 0;
 }
