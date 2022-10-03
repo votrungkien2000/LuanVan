@@ -1,8 +1,43 @@
 import Picture from 'asset/image/hotel-gb468be24c_1920.jpg'
+import Information from './Infomation'
 import { Button } from 'primereact/button';
 import 'asset/style/Card.css'
+import { useState } from 'react';
+
 function Card() {
     let color = "#62a30f"
+    const [turnOn, setTurnOn] = useState(false)
+    const handleInfo = () => {
+        if (status !== 1) {
+            setStatus(1)
+         }
+        else {
+            setTurnOn(!turnOn)
+        }
+
+    }   
+    const handleComment = () => {
+        if (status !== 3) {
+            setStatus(3)
+         }
+        else {
+            setTurnOn(!turnOn)
+        }
+
+    }
+    const [status, setStatus] = useState(1)
+    const renderSubComponent = () => {
+        if (status === 1) {
+            return <Information />
+        }
+        if (status === 2) {
+            return <div>Picture</div>
+        }
+        if (status === 3) {
+            return <div>Comment</div>
+        }
+    }
+    console.log(turnOn);
     return (
         <div className="Card">
             <div className="Card__container">
@@ -21,23 +56,35 @@ function Card() {
                                 <i style={{ color: "var(--yellow)", marginRight: "5px" }} className='pi pi-star-fill'></i>
                             </div>
                         </div>
-                        <div style={{ paddingTop: "5px" }} className='Card__info__left__distance'>
-                            <div style={{ display:"flex", marginRight:"20px"}}>
-                                <i style={{ marginRight: "10px", paddingTop: "2px" }} className='pi pi-car'></i>
-                                <p>From city center: 0.6km</p>
+                        <div onClick={handleInfo} style={{ display: "flex", paddingTop: "5px", justifyContent: "space-between" }} className='Card__info__left__distance'>
+                            <div style={{ display: "flex" }}>
+                                <div style={{ display: "flex", marginRight: "20px" }}>
+                                    <i style={{ marginRight: "10px", paddingTop: "2px" }} className='pi pi-car'></i>
+                                    <p>From city center: 0.6km</p>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between" }} className='Card__info__left__location'>
+                                    <div style={{ display: "flex" }}>
+                                        <i style={{ marginRight: "5px" }} class="bi bi-geo-alt"></i>
+                                        <p>Sài gòn</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className='Card__info__left__location'>
-                                <i style={{ marginRight: "5px"}} class="bi bi-geo-alt"></i>
-                                <p>Sài gòn</p>
+                            <div>
+                                <i className='pi pi-angle-down'></i>
                             </div>
                         </div>
-                        <div className='Card__info__left__comment'>
-                            <span style={{ backgroundColor: color, borderRadius: "10px", color: "#fff" }} className='Card__info__left__comment__span'>&nbsp;&nbsp;7.9&nbsp;&nbsp;</span>
-                            <strong className=''>&nbsp;Tốt&nbsp;</strong>
-                            <span>(1480 comment)</span>
+                        <div onClick={handleComment} style={{ display: "flex", paddingTop: "5px", justifyContent: "space-between" }} className='Card__info__left__comment'>
+                            <div>
+                                <span style={{ backgroundColor: color, borderRadius: "10px", color: "#fff" }} className='Card__info__left__comment__span'>&nbsp;&nbsp;7.9&nbsp;&nbsp;</span>
+                                <strong className=''>&nbsp;Tốt&nbsp;</strong>
+                                <span>(1480 comment)</span>
+                            </div>
+                            <div>
+                                <i className='pi pi-angle-down'></i>
+                            </div>
                         </div>
                         <div className='Card__info__left__book'>
-                            <Button style={{ borderRadius: "8px", height: "40px", width: "100%", backgroundColor: "var(--bs-btn-bg)", border: "1px solid var(--hover)", color: "var(--white)", fontWeight: "500" }} label="Book room" />
+                            <Button style={{ borderRadius: "8px", width: "100%", backgroundColor: "var(--bs-btn-bg)", border: "1px solid var(--hover)", color: "var(--white)", fontWeight: "500" }} label="Book room" />
                         </div>
                     </div>
                     <div className='Card__info__right'>
@@ -57,7 +104,30 @@ function Card() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>{
+                turnOn === true ?
+                    <div className='Card__extend'>
+                        <div className='Card__extend__header'>
+                            <ul className='Card__extend__header__ul'>
+                                <li onClick={() => setStatus(1)} style={{
+                                    marginRight: "20px", color: (status === 1 ? "var(--bs-btn-bg)" : ""),
+                                    borderBottom: (status === 1 ? "1px solid #43b4f1" : "")
+                                }}>information</li>
+                                <li onClick={() => setStatus(2)} style={{
+                                    marginRight: "20px", color: (status === 2 ? "var(--bs-btn-bg)" : ""),
+                                    borderBottom: (status === 2 ? "1px solid #43b4f1" : "")
+                                }}>picture</li>
+                                <li onClick={() => setStatus(3)} style={{
+                                    color: (status === 3 ? "var(--bs-btn-bg)" : ""),
+                                    borderBottom: (status === 3 ? "1px solid #43b4f1" : "")
+                                }}>comment</li>
+                            </ul>
+                        </div>
+                        <div className='Card__extend__body'>
+                            {renderSubComponent()}
+                        </div>
+                    </div> : <div></div>
+            }
         </div>
     )
 }

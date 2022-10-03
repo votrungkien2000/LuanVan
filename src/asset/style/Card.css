@@ -1,5 +1,5 @@
 .Card {
-    height: 200px;
+    height: auto;
     width: 100%;
     min-width: 700px;
     max-width: 900px;
@@ -9,13 +9,14 @@
     padding-left: 5px;
     padding-right: 5px;
     display: flex;
+    flex-direction: column;
     box-shadow: 3px 3px 5px 1px #888888;
     position:   relative;
     margin-top: 10px;
 }
 
 .Card__container {
-    height: 100%;
+    height: 200px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -44,12 +45,19 @@
     border-bottom: 1px solid var(--shape);
 }
 .Card__info__left__distance{
-    margin-top: 5px;
+    padding-top: 5px;
     display: flex;
     border-bottom: 1px solid var(--shape);
 }
+.Card__info__left__distance:hover{
+    background-color: var(--background);
+}
 .Card__info__left__comment{
     padding-top: 10px;
+}
+.Card__info__left__comment:hover{
+    background-color: var(--hover);
+    cursor: pointer;
 }
 .Card__info__right{
     padding-left: 10px;
@@ -94,4 +102,25 @@
 }
 .Card__info__left__location{
     display: flex;
+}
+.Card__extend{
+    width: 100%;
+    /* border-top: 1px solid var(--shape); */
+    margin-top: 10px;
+}
+.Card__extend__header{
+    padding-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--shape);
+}
+.Card__extend__header__ul{
+    display: flex;
+    width: auto;
+    list-style: none;
+}
+.Card__extend__header__ul li:hover{
+    color: var(--bs-btn-bg);
+    cursor: pointer;
 }
