@@ -1,11 +1,13 @@
-import Picture from 'asset/image/hotel-gb468be24c_1920.jpg'
-import Information from './Infomation'
+import Picture from 'asset/image/hotel-gb468be24c_1920.jpg';
+import Information from './Infomation';
+import ListPicture from './Picture';
+import Comment from './Comment';
 import { Button } from 'primereact/button';
-import 'asset/style/Card.css'
+import 'asset/style/Card.css';
 import { useState } from 'react';
 
 function Card() {
-    let color = "#62a30f"
+    let color = "#005f00"
     const [turnOn, setTurnOn] = useState(false)
     const handleInfo = () => {
         if (status !== 1) {
@@ -31,10 +33,10 @@ function Card() {
             return <Information />
         }
         if (status === 2) {
-            return <div>Picture</div>
+            return <ListPicture />
         }
         if (status === 3) {
-            return <div>Comment</div>
+            return <Comment/>
         }
     }
     console.log(turnOn);
@@ -76,7 +78,7 @@ function Card() {
                         <div onClick={handleComment} style={{ display: "flex", paddingTop: "5px", justifyContent: "space-between" }} className='Card__info__left__comment'>
                             <div>
                                 <span style={{ backgroundColor: color, borderRadius: "10px", color: "#fff" }} className='Card__info__left__comment__span'>&nbsp;&nbsp;7.9&nbsp;&nbsp;</span>
-                                <strong className=''>&nbsp;Tốt&nbsp;</strong>
+                                <strong>&nbsp;Tốt&nbsp;</strong>
                                 <span>(1480 comment)</span>
                             </div>
                             <div>

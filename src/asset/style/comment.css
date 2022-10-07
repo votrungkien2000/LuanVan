@@ -1,0 +1,28 @@
+.Comment__box{
+    border: 1px solid var(--shape);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+}
+.Comment__box_pointEvaluation{
+    border-right: 1px solid var(--shape);
+    padding-right: 10px;
+    width: 40%;
+}
+.Comment__box_pointEvaluation__value__scores{
+    display: flex;
+}
+.Comment__box__rating{
+    width: 60%;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.Comment__box__rating__item{
+    display: flex;
+    justify-content: space-between;
+}
+.Comment__box__source{
+    margin-top: 10px;
+}
