@@ -4,42 +4,50 @@ import ListPicture from './Picture';
 import Comment from './Comment';
 import { Button } from 'primereact/button';
 import 'asset/style/Card.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Card() {
     let color = "#005f00"
     const [turnOn, setTurnOn] = useState(false)
     const handleInfo = () => {
         if (status !== 1) {
-            setStatus(1)
-         }
+            setStatus(() => 1)
+            setTurnOn(true)
+        }
         else {
-            setTurnOn(!turnOn)
+            setTurnOn(() => !turnOn)
         }
 
-    }   
+    }
     const handleComment = () => {
         if (status !== 3) {
-            setStatus(3)
-         }
+            setStatus(() => 3)
+            setTurnOn(true)
+        }
         else {
-            setTurnOn(!turnOn)
+            setTurnOn(!turnOn);
         }
-
+        console.log(status)
     }
-    const [status, setStatus] = useState(1)
-    const renderSubComponent = () => {
+    const [status, setStatus] = useState(0)
+    const [render, setRender] = useState(null)
+    useEffect(() => {
         if (status === 1) {
-            return <Information />
+            setRender(<Information />)
         }
-        if (status === 2) {
-            return <ListPicture />
+        else if (status === 2) {
+            setRender(<ListPicture />)
         }
-        if (status === 3) {
-            return <Comment/>
+        else if (status === 3) {
+            setRender(<Comment />)
         }
-    }
-    console.log(turnOn);
+        else {
+            setRender(null)
+        }
+    }, [status]);
+
+    // console.log(status)
+    // console.log(turnOn);
     return (
         <div className="Card">
             <div className="Card__container">
@@ -107,7 +115,7 @@ function Card() {
                     </div>
                 </div>
             </div>{
-                turnOn === true ?
+                turnOn ?
                     <div className='Card__extend'>
                         <div className='Card__extend__header'>
                             <ul className='Card__extend__header__ul'>
@@ -126,7 +134,7 @@ function Card() {
                             </ul>
                         </div>
                         <div className='Card__extend__body'>
-                            {renderSubComponent()}
+                            {render}
                         </div>
                     </div> : <div></div>
             }

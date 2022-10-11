@@ -107,7 +107,7 @@ function Login() {
                         <div id="emailHelp" style={{ color: error.account ? "#f03f20" : "" }} className="form-text notify">{notify.account}</div>
                     </div>
                     <div className="mb-3">
-                        <input className="form-control" id="exampleInputPassword1"
+                        <input type="number" className="form-control" id="exampleInputPassword1"
                             value={numberPhone}
                             onChange={e => setNumberPhone(e.target.value)}
                             placeholder="Number phone"
