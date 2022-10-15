@@ -14,8 +14,16 @@
 }
 
 .homePage__search {
+    width: 100%;
     display: flex;
     justify-content: center;
+}
+.homePage__search__box{
+    display: flex;
+}
+.homePage__search__price{
+    display: flex;
+    margin-left: 20px;
 }
 .Card__info__left__distance{
     display: flex;
@@ -59,4 +67,62 @@
     background-size: cover;
     border-radius: 10px;
     top: 0;
+}
+.p-dropdown{
+    margin-right: 5px;
+    background-color: #fff !important;
+    height: 45px;
+    width: auto;
+    color: black;
+    border-radius: 8px !important;
+    margin-left: 10px;
+}
+.homePage__search__price__slider{
+    width: 200px;
+    margin-right: 20px;
+}
+/* width < 470px */
+@media only screen and (max-width: 46.1875rem){
+    .p-dropdown{
+        margin-right: 0.02px;
+        /* background-color: #fff !important; */
+        height: 30px;
+        width: auto;
+        width: 108px;
+        color: black;
+        border-radius: 8px !important;
+    }
+    .p-inputtext{
+        font-size: 0.8rem !important;
+    }
+    .homePage__search {
+        display: flex;
+        justify-content: center;
+        
+    }
+    .homePage__search__price {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .homePage__search__box{
+        display: flex;
+        /* justify-content:space-between; */
+        flex-wrap: wrap;
+        width: 90%;
+    }
+    .homePage__body_map{
+        display: none;
+    }
+    .homePage__search__price__slider{
+        width: 208px !important;
+    }
+    .homePage__search__price__btn{
+       height: 38px !important;
+       width: 108px !important;
+       margin-right: 22px !important;
+    }
+    .homePage__body__hotel{
+        width: 100%;
+    }
 }

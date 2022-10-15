@@ -26,3 +26,11 @@
 .Comment__box__source{
     margin-top: 10px;
 }
+@media only screen and (max-width: 46.1875rem) {
+    .Comment__box__rating__item__score{
+        display: none;
+    }
+    .Comment__box__rating__item__progessBar{
+        width: 100% !important;
+    }
+}

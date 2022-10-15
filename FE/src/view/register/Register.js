@@ -1,5 +1,6 @@
 import React from 'react';
 import "../../asset/style/login.css"
+import { Password } from 'primereact/password';
 import { useState } from 'react';
 import Logo from '../../asset/image/Focal Real.png'
 import { useNavigate } from 'react-router-dom';
@@ -126,41 +127,42 @@ function Login() {
                         <div id="emailHelp" style={{ color: error.numberPhone ? "#f03f20" : "" }} className="form-text notify">{notify.numberPhone}</div>
                     </div>
                     <div className="mb-3">
-                        <input type="password" className="form-control" id="exampleInputPassword1"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            placeholder="Password"
-                            onFocus={() => {
-                                setError(prev => ({
-                                    ...prev,
-                                    password: false
-                                }))
-                                setNotify(prev => ({
-                                    ...prev,
-                                    password: ""
-                                }))
-                            }}
-                        // inputprops={offAutoComplete}
-                        />
+                    <Password 
+                        style={{width:"100%"}}
+                        value={password} 
+                        onChange={e => setPassword(e.target.value)}
+                        placeholder="Password"
+                        onFocus={() => {
+                            setError(prev => ({
+                                ...prev,
+                                password: false
+                            }))
+                            setNotify(prev => ({
+                                ...prev,
+                                password: ""
+                            }))
+                        }}
+                        toggleMask />
                         <div id="emailHelp" style={{ color: error.password ? "#f03f20" : "" }} className="form-text notify">{notify.password}</div>
                     </div>
                     <div className="mb-3">
-                        <input type="password" className="form-control" id="exampleInputPassword1"
-                            value={confimPassword}
-                            onChange={e => setconfimPassword(e.target.value)}
-                            placeholder="Confrim Password"
-                            onFocus={() => {
-                                setError(prev => ({
-                                    ...prev,
-                                    confimPassword: false
-                                }))
-                                setNotify(prev => ({
-                                    ...prev,
-                                    confimPassword: ""
-                                }))
-                            }}
-                        // inputprops={offAutoComplete}
-                        />
+                    <Password 
+                        style={{width:"100%"}}
+                        value={confimPassword} 
+                        onChange={e => setconfimPassword(e.target.value)}
+                        placeholder="Confrim Password"
+                        onFocus={() => {
+                            setError(prev => ({
+                                ...prev,
+                                confimPassword: false
+                            }))
+                            setNotify(prev => ({
+                                ...prev,
+                                confimPassword: ""
+                            }))
+                        }}
+                        toggleMask 
+                        feedback = {false}/>
                         <div id="emailHelp" style={{ color: error.confimPassword ? "#f03f20" : "" }} className="form-text notify">{notify.confimPassword}</div>
                     </div>
                     <div className="login__submit form-register">

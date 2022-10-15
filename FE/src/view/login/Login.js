@@ -1,4 +1,5 @@
 import React from 'react';
+import { Password } from 'primereact/password';
 import "../../asset/style/login.css"
 import { useState } from 'react';
 import Logo from '../../asset/image/Focal Real.png'
@@ -24,7 +25,7 @@ function Login() {
             }))
             setNotify(prev => ({
                 ...prev,
-                account: "Please enter a password"
+                account: "Please enter a account"
             }))
             check = false
         }
@@ -78,29 +79,29 @@ function Login() {
                         <div id="emailHelp" style={{ color: error.account ? "#f03f20" : "" }} className="form-text notify">{notify.account}</div>
                     </div>
                     <div className="mb-3">
-                        <input type="password" className="form-control" id="exampleInputPassword1"
-                            value={password}
-                            autoComplete="new-password"
-                            onChange={e => setPassword(e.target.value)}
-                            placeholder="Password"
-                            onFocus={() => {
-                                setError(prev => ({
-                                    ...prev,
-                                    password: false
-                                }))
-                                setNotify(prev => ({
-                                    ...prev,
-                                    password: ""
-                                }))
-                            }}
-                        // inputprops={offAutoComplete}
-                        />
+                        <Password 
+                        style={{width:"100%"}}
+                        value={password} 
+                        onChange={e => setPassword(e.target.value)}
+                        placeholder="Password"
+                        onFocus={() => {
+                            setError(prev => ({
+                                ...prev,
+                                password: false
+                            }))
+                            setNotify(prev => ({
+                                ...prev,
+                                password: ""
+                            }))
+                        }}
+                        toggleMask 
+                        feedback = {false}/>
                         <div id="emailHelp" style={{ color: error.password ? "#f03f20" : "" }} className="form-text notify">{notify.password}</div>
                     </div>
                     <div className="login__submit">
                         <button onClick={handleSubmit} className="btn btn-primary btn-submit">Submit</button>
                         <Link className='btn-register' to="/register">
-                            <button style={{width: "100%"}} className="btn btn-primary">Register</button>
+                            <button style={{ width: "100%" }} className="btn btn-primary">Register</button>
                         </Link>
                     </div>
                 </div>

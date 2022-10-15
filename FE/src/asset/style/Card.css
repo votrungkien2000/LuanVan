@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     box-shadow: 3px 3px 5px 1px #888888;
-    position:   relative;
+    position: relative;
     margin-top: 10px;
 }
 
@@ -25,7 +25,7 @@
 
 .Card__container__picture {
     height: 96%;
-    width: 190px;
+    width: 180px;
     background-size: cover;
     border-radius: 10px;
     background-position: center;
@@ -38,89 +38,280 @@
     padding: 10px;
     justify-content: space-between;
 }
-.Card__info__left{
-    min-width: 48%;
+
+.Card__info__left {
+    min-width: 49%;
 }
-.Card__info__left_nameHL{
+
+.Card__info__left_nameHL {
     border-bottom: 1px solid var(--shape);
 }
-.Card__info__left__distance{
-    padding-top: 5px;
-    display: flex;
-    border-bottom: 1px solid var(--shape);
+
+.Card__info__left__distance__box {
+    margin-right: 1px !important;
 }
-.Card__info__left__distance:hover{
+
+.Card__info__left__distance__box__p {
+    display: none;
+}
+
+.Card__info__left__distance:hover {
     background-color: var(--background);
 }
-.Card__info__left__comment{
+
+.Card__info__left__comment {
     padding-top: 10px;
 }
-.Card__info__left__comment:hover{
+
+.Card__info__left__comment:hover {
     background-color: var(--hover);
     cursor: pointer;
 }
-.Card__info__right{
+
+.Card__info__right {
     padding-left: 10px;
     display: flex;
-    width: 48%;
-    min-width: 250px;
+    width: 50%;
+    min-width: 50%;
     flex-direction: column;
     justify-content: space-between;
 }
-.Card__info__right__price{
+
+.Card__info__right__price {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 70px;
 }
-.Card__info__right__price div{
+
+.Card__info__right__price div {
     width: 48%;
     border: 1px solid var(--shape);
     border-radius: 5px;
 }
-.Card__info__right__price div:hover{
+
+.Card__info__right__price div:hover {
     background-color: var(--hover);
     cursor: pointer;
-}   
-.Card__info__left__book{
-    display:flex;
+}
+
+.Card__info__left__book {
+    display: flex;
     width: 100%;
     padding-top: 10px;
 }
-.Card__info__right__promotion{
+
+.Card__info__right__promotion {
     display: flex;
     width: 100%;
     justify-content: end;
-    
+
 }
-.Card__info__right__promotion__title{
+
+.Card__info__right__promotion__title {
     display: flex;
-    max-width: 100px;
+    width: 30%;
     border: 1px solid red;
     border-radius: 5px;
 
 }
-.Card__info__left__location{
+
+.Card__info__left__location {
     display: flex;
 }
-.Card__extend{
+
+.Card__extend {
     width: 100%;
     /* border-top: 1px solid var(--shape); */
     margin-top: 10px;
 }
-.Card__extend__header{
+
+.Card__extend__header {
     padding-top: 10px;
     width: 100%;
     display: flex;
     justify-content: center;
     border-bottom: 1px solid var(--shape);
 }
-.Card__extend__header__ul{
+
+.Card__extend__header__ul {
     display: flex;
     width: auto;
     list-style: none;
 }
-.Card__extend__header__ul li:hover{
+
+.Card__extend__header__ul li:hover {
     color: var(--bs-btn-bg);
     cursor: pointer;
+}
+
+/* width < 1024px */
+@media only screen and (max-width: 46.1875rem) {
+    .Card {
+        height: auto;
+        min-width: 380px;
+        width: 97% !important;
+        background-color: var(--white);
+        border-radius: 10px;
+        padding-left: 0px;
+        padding-right: 0px;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5px;
+        box-shadow: 3px 3px 5px 1px #888888;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .Card__container {
+        height: 180px;
+        width: 100%;
+        display: flex;
+        padding: 2px;
+        /* justify-content: center;
+        align-items: center; */
+    }
+
+    .Card__container__picture {
+        height: 100%;
+        width: 100px;
+        background-size: cover;
+        border-radius: 10px;
+        background-position: center;
+    }
+
+    .Card__info {
+        height: 100%;
+        flex: 1;
+        width: 80%;
+        display: flex;
+        padding: 5px;
+        justify-content: space-between;
+    }
+
+    .Card__info__left {
+        padding-right: 5px !important;
+    }
+
+    .Card__info__left_nameHL {
+        border-bottom: 1px solid var(--shape);
+    }
+
+    .Card__info__left__distance {
+        padding-top: 5px;
+        display: flex;
+        border-bottom: 1px solid var(--shape);
+    }
+
+    .Card__info__left__distance:hover {
+        background-color: var(--background);
+    }
+
+    .Card__info__left__comment {
+        padding-top: 10px;
+    }
+
+    .Card__info__left__comment__text {
+        display: none;
+    }
+
+    .Card__info__left__comment:hover {
+        background-color: var(--hover);
+        cursor: pointer;
+    }
+
+    .Card__info__right {
+        display: flex;
+        padding-left: 2px;
+        width: 30% !important;
+        justify-content: space-between;
+    }
+
+    .Card__info__right__price {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+    }
+
+    .Card__info__right__price div {
+        width: 48%;
+        border: 1px solid var(--shape);
+        border-radius: 5px;
+    }
+
+    .Card__info__right__price div:hover {
+        background-color: var(--hover);
+        cursor: pointer;
+    }
+
+    .Card__info__left__book {
+        display: flex;
+        width: 100%;
+        padding-top: 20px;
+    }
+
+    .Card__info__right__promotion {
+        display: flex;
+        width: 100%;
+        justify-content: start;
+        border: 1px solid red !important;
+        /* border-radius: 5px; */
+
+    }
+
+    .Card__info__right__promotion__title {
+        display: flex;
+        max-width: 100px;
+        /* border-radius: 5px !important; */
+        border: none;
+    }
+
+    .Card__info__left__location {
+        display: flex;
+    }
+
+    .Card__extend {
+        width: 100%;
+        /* border-top: 1px solid var(--shape); */
+        margin-top: 10px;
+    }
+
+    .Card__extend__header {
+        padding-top: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid var(--shape);
+    }
+
+    .Card__extend__header__ul {
+        display: flex;
+        width: auto;
+        list-style: none;
+        padding-left: 0 !important;
+    }
+
+    .Card__extend__header__ul li:hover {
+        color: var(--bs-btn-bg);
+        cursor: pointer;
+    }
+
+    .Card__info__right__price__min {
+        font-size: 1rem !important;
+        height: 50px;
+        width: 100% !important;
+    }
+
+    .Card__info__right__price__max {
+        height: 50px;
+        font-size: 1rem !important;
+        margin-top: 8px;
+        width: 100% !important;
+    }
+
+    .Card__info__left__book {
+        height: 30px;
+    }
 }

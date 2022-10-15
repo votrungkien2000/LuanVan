@@ -68,14 +68,14 @@ function Card() {
                         </div>
                         <div onClick={handleInfo} style={{ display: "flex", paddingTop: "5px", justifyContent: "space-between" }} className='Card__info__left__distance'>
                             <div style={{ display: "flex" }}>
-                                <div style={{ display: "flex", marginRight: "20px" }}>
+                                <div className='Card__info__left__distance__box' style={{ display: "flex", marginRight: "20px" }}>
                                     <i style={{ marginRight: "10px", paddingTop: "2px" }} className='pi pi-car'></i>
-                                    <p>From city center: 0.6km</p>
+                                    <p className='Card__info__left__distance__box__p'>From city center: 0.6km</p>
                                 </div>
                                 <div style={{ display: "flex", justifyContent: "space-between" }} className='Card__info__left__location'>
                                     <div style={{ display: "flex" }}>
                                         <i style={{ marginRight: "5px" }} class="bi bi-geo-alt"></i>
-                                        <p>Sài gòn</p>
+                                        <p >Sài gòn</p>
                                     </div>
                                 </div>
                             </div>
@@ -87,14 +87,14 @@ function Card() {
                             <div>
                                 <span style={{ backgroundColor: color, borderRadius: "10px", color: "#fff" }} className='Card__info__left__comment__span'>&nbsp;&nbsp;7.9&nbsp;&nbsp;</span>
                                 <strong>&nbsp;Tốt&nbsp;</strong>
-                                <span>(1480 comment)</span>
+                                <span className='Card__info__left__comment__text'>(1480 comment)</span>
                             </div>
                             <div>
                                 <i className='pi pi-angle-down'></i>
                             </div>
                         </div>
                         <div className='Card__info__left__book'>
-                            <Button style={{ borderRadius: "8px", width: "100%", backgroundColor: "var(--bs-btn-bg)", border: "1px solid var(--hover)", color: "var(--white)", fontWeight: "500" }} label="Book room" />
+                            <Button className='Card__info__left__book' style={{ borderRadius: "8px", width: "100%", backgroundColor: "var(--bs-btn-bg)", border: "1px solid var(--hover)", color: "var(--white)", fontWeight: "500" }} label="Book room" />
                         </div>
                     </div>
                     <div className='Card__info__right'>
@@ -108,7 +108,7 @@ function Card() {
                             <div className='Card__info__right__price__min' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                                 <p>minimum: 100$</p>
                             </div>
-                            <div className='Card__info__right_price__max' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                            <div className='Card__info__right__price__max' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                                 <p>maximun: 350$</p>
                             </div>
                         </div>
