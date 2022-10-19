@@ -3,17 +3,28 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
   {
+    userName: {
+      type: String
+    },
     email: {
       type: String
     },
     password: {
       type: String
     },
-    status: {
+    birthDate: {
+      type: Date
+    },
+    numberPhone: {
+      type: String
+    },
+    province: {
+      type: String
+    },
+    district: {
       type: String
     }
   },
-  { timestamps: true }
 );
 
 module.exports = mongoose.model("User", User);

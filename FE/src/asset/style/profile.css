@@ -82,11 +82,12 @@
 .p-button-info1{
     width: 150px !important;
 }
-/* .p-inputtext{
+.p-inputtext{
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     height: 100%;
-} */
+    border: 1px solid var(--shape) !important;
+}
 @media only screen and (max-width: 50.1875rem) {
     .profile__info {
         width: 100%;

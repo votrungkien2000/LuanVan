@@ -1,4 +1,4 @@
-const { add, scraping } = require("../Services/UserServices");
+const { add, scraping, getUser } = require("../Services/UserServices");
 
 
 
@@ -7,6 +7,18 @@ module.exports = {
     try {
       const user = req.body;
       const result = await add(user);
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const user = req.body;
+      const result = await getUser(user.id);
       return res.status(200).json(result);
     } catch (err) {
       return res.status(500).json({

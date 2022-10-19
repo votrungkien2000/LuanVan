@@ -4,11 +4,6 @@
     top:0;
     z-index: 3;
 }
-.header__box__menu{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
 .dropdown-menu{
     position: absolute;
     left: 0;

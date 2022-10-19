@@ -4,7 +4,7 @@
 
 :root {
   --c1: #6acb2c;
-  --bs-btn-bg: #43b4f1;
+  --bs-btn-bg: #6366f1;
   --hover: #e8eaec;
   --background: #f9fafc;
   --background2: #ffffff;
@@ -39,4 +39,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+.me-auto{
+  margin-right: unset !important;
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -79,12 +80,14 @@ export default function AccountMenu() {
           </ListItemIcon>
           Add another account
         </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+        <Link style={{ textDecoration: "none", color: "black" }} className='btn-register' to="/profile">
+          <MenuItem>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+        </Link>
         <MenuItem>
           <ListItemIcon>
             <Logout fontSize="small" />

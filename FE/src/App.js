@@ -5,7 +5,7 @@ import Register from 'view/register/Register'
 import Profile from 'view/profile/Profile.js'
 import LayoutDefault from './component/layout/Layout';
 import './App.scss';
-import "primereact/resources/themes/vela-blue/theme.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
