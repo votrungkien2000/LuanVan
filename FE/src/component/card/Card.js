@@ -94,7 +94,7 @@ function Card() {
                             </div>
                         </div>
                         <div className='Card__info__left__book'>
-                            <Button className='Card__info__left__book' style={{ borderRadius: "8px", width: "100%", backgroundColor: "var(--bs-btn-bg)", border: "1px solid var(--hover)", color: "var(--white)", fontWeight: "500" }} label="Book room" />
+                            <Button className='Card__info__left__book__btn' style={{ borderRadius: "8px", width: "100%", backgroundColor: "var(--bs-btn-bg)", border: "1px solid var(--hover)", color: "var(--white)", fontWeight: "500" }} label="Book room" />
                         </div>
                     </div>
                     <div className='Card__info__right'>

@@ -1,7 +1,6 @@
 .homePage {
     height: 100%;
     width: 100%;
-    padding-top: 20px;
     background-color: var(--background);
 }
 
@@ -18,6 +17,7 @@
 .homePage__search {
     width: 100%;
     display: flex;
+    padding-top: 20px;
     justify-content: center;
 }
 
@@ -52,15 +52,18 @@
 
 .homePage__body {
     display: flex;
+    padding: 20px;
 }
 
 .homePage__body__hotel {
     width: 50%;
 }
-
+.homePage__body__sort{
+    /* padding-left: 20px; */
+}
 /* map */
 .homePage__body_map {
-    width: 45%;
+    width: 50%;
     margin-top: 20px;
     height: 93vh;
     position: sticky;
@@ -84,7 +87,9 @@
     border-radius: 8px !important;
     margin-left: 10px;
 }
-
+.p-dropdown-label{
+    border: 0 !important;
+}
 .homePage__search__price__slider {
     width: 200px;
     margin-right: 20px;
@@ -99,36 +104,42 @@
         margin-right: 0.02px;
         height: 40px;
         width: auto;
-        width: 108px;
+        width: 118px;
         color: black;
         border-radius: 8px !important;
     }
 
     .p-inputtext {
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
         height: 100%;
     }
 
     .homePage__search {
         display: flex;
         justify-content: center;
-
     }
 
     .homePage__search__price {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-between !important;
         width: 100%;
     }
-
+    .homePage__search__box__dropdown{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+    }
     .homePage__search__box {
         display: flex;
         flex-wrap: wrap;
-        width: 90%;
+        padding-left: 5px;
+        padding-right: 5px;
+        width: 100%;
     }
     .homePage__body{
         height: 74vh;
         width: 100%;
+        padding: 5px;
     }
     .homePage__body_map {
         display: none;
@@ -149,13 +160,12 @@
         border-radius: 0 !important;
     }
     .homePage__search__price__slider {
-        width: 208px !important;
+        flex: 1;
     }
 
     .homePage__search__price__btn {
         height: 38px !important;
-        width: 108px !important;
-        margin-right: 22px !important;
+        width: 118px !important;
     }
     .homePage__body__hotel {
         width: 100%;

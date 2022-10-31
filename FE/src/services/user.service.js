@@ -6,6 +6,10 @@ class User extends BaseService {
         const result = await this.api.post('/api/user/getUser', {id: id});
         return result;
     }
+    login = async (account, password) => {
+        const result = await this.api.post('/api/user/login', {email: account, password: password});
+        return result;
+    }
 
 }
 

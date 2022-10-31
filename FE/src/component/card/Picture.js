@@ -1,23 +1,4 @@
-// import 'asset/style/picture.css';
-// import { useState } from 'react';
-// import hinh from 'asset/image/2.webp'
-// function ListPicture() {
-//     const [img, setImg] = useState(0);
-//     const handleImg = ()=>{
-//         setImg(img+1);
-//     }
-//     console.log(img)
-//     return (
-//         <div className="Picture">
-//             <div className="image-gallery">
-//                 <img src={hinh} />
-//                 <i style={{fontSize: "3rem"}} onClick={handleImg} className='pi pi-angle-right image-gallery-right'></i>
-//                 <i style={{fontSize: "3rem"}} onClick={handleImg} className='pi pi-angle-left image-gallery-left'></i>
-//             </div>
-//         </div>
-//     )
-// }
-// export default ListPicture
+
 import React, { useState } from 'react';
 import  PhotoService from 'asset/image/PhotoService';
 import { Galleria } from 'primereact/galleria';

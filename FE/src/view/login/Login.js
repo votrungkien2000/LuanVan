@@ -3,9 +3,13 @@ import { Password } from 'primereact/password';
 import "../../asset/style/login.css"
 import { useState } from 'react';
 import Logo from '../../asset/image/Focal Real.png'
-import { Link } from 'react-router-dom';
+import UserService from 'services/user.service';
+import { Link, useNavigate } from 'react-router-dom';
+
+const userService = new UserService()
 
 function Login() {
+    const navigate = useNavigate()
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState({
@@ -43,12 +47,25 @@ function Login() {
         return check
     }
 
-    const handleSubmit = () => {
-        if (validate()) {
-            console.log("submit thnah cong")
-        }
-        else {
-            console.log("that bai")
+    const handleSubmit = async () => {
+        try {
+            if (validate()) {
+                const result = await userService.login(account, password)
+                localStorage.setItem('accessToken', result.data.data.createToken)
+                localStorage.setItem('id', result.data.data.result._id)
+                console.log(result.data)
+                if(result.data.statusCode === 200){
+                    navigate('/');
+                    console.log("thanh cong")
+                }else{
+                    console.log("login faile")
+                }               
+            }
+            else {
+                console.log("that bai")
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
     return (
@@ -79,23 +96,23 @@ function Login() {
                         <div id="emailHelp" style={{ color: error.account ? "#f03f20" : "" }} className="form-text notify">{notify.account}</div>
                     </div>
                     <div className="mb-3">
-                        <Password 
-                        style={{width:"100%"}}
-                        value={password} 
-                        onChange={e => setPassword(e.target.value)}
-                        placeholder="Password"
-                        onFocus={() => {
-                            setError(prev => ({
-                                ...prev,
-                                password: false
-                            }))
-                            setNotify(prev => ({
-                                ...prev,
-                                password: ""
-                            }))
-                        }}
-                        toggleMask 
-                        feedback = {false}/>
+                        <Password
+                            style={{ width: "100%" }}
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            placeholder="Password"
+                            onFocus={() => {
+                                setError(prev => ({
+                                    ...prev,
+                                    password: false
+                                }))
+                                setNotify(prev => ({
+                                    ...prev,
+                                    password: ""
+                                }))
+                            }}
+                            toggleMask
+                            feedback={false} />
                         <div id="emailHelp" style={{ color: error.password ? "#f03f20" : "" }} className="form-text notify">{notify.password}</div>
                     </div>
                     <div className="login__submit">

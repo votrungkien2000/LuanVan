@@ -4,6 +4,10 @@ import { Button } from 'primereact/button';
 import { useEffect, useState } from 'react'
 import { Slider } from 'primereact/slider';
 import { Dropdown } from 'primereact/dropdown';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import ProvinceService from 'services/province.service';
 import DistrictService from 'services/district.service';
 
@@ -22,6 +26,25 @@ function HomePage() {
     const [disabledDistrict, setdisabledDistrict] = useState(true)
     const [price, setPrice] = useState([0, 500]);
     const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectChoose, setSelectChoose] = useState('1')
+    const [chooses, setChooses] = useState([
+        {
+            id: 1,
+            name: 'Our Suggestions'
+        },
+        {
+            id: 2,
+            name: 'search by rank'
+        },
+        {
+            id: 3,
+            name: 'search by rating'
+        }
+
+    ])
+    const handleSortChange = (e) => {
+        setSelectChoose(e.target.value)
+    }
     const getDistrict = async (idProvince) => {
         try {
             const result = await districtService.getDistrict(idProvince)
@@ -34,7 +57,7 @@ function HomePage() {
         setSelectedProvince(e.value);
         getDistrict(e.value)
     }
-    const onChangeMap = () =>{
+    const onChangeMap = () => {
         setShowMap(!showMap)
     }
     const [selectedDistrict, setSelectedDistrict] = useState(null);
@@ -69,33 +92,35 @@ function HomePage() {
         <div className='homePage'>
             <div className='homePage__search'>
                 <div className='homePage__search__box'>
-                    <Dropdown
-                        className='homePage__search__Dropdown'
-                        value={selectedProvince}
-                        options={province}
-                        onChange={onChangeProvince}
-                        optionLabel="nameProvince"
-                        optionValue='_id'
-                        placeholder="Province"
-                    />
-                    <Dropdown
-                        className='homePage__search__Dropdown'
-                        disabled={disabledDistrict}
-                        value={selectedDistrict}
-                        options={District}
-                        optionValue='_id'
-                        onChange={onChangeDistrict}
-                        optionLabel="nameDistrict"
-                        placeholder="District"                 
-                    />
-                    <Dropdown
-                        className='homePage__search__Dropdown'
-                        value={selectedkindRoom}
-                        options={kindRoom}
-                        onChange={onChangekindRoom}
-                        optionLabel="name"
-                        placeholder="kindRoom"
-                    />
+                    <div className='homePage__search__box__dropdown'>
+                        <Dropdown
+                            className='homePage__search__Dropdown'
+                            value={selectedProvince}
+                            options={province}
+                            onChange={onChangeProvince}
+                            optionLabel="nameProvince"
+                            optionValue='_id'
+                            placeholder="Province"
+                        />
+                        <Dropdown
+                            className='homePage__search__Dropdown'
+                            disabled={disabledDistrict}
+                            value={selectedDistrict}
+                            options={District}
+                            optionValue='_id'
+                            onChange={onChangeDistrict}
+                            optionLabel="nameDistrict"
+                            placeholder="District"
+                        />
+                        <Dropdown
+                            className='homePage__search__Dropdown'
+                            value={selectedkindRoom}
+                            options={kindRoom}
+                            onChange={onChangekindRoom}
+                            optionLabel="name"
+                            placeholder="kindRoom"
+                        />
+                    </div>
                     <div className='homePage__search__price'>
                         <div className='homePage__search__price__slider' style={{ width: "200px", marginRight: "20px" }}>
                             <h5 style={{ fontSize: "1rem" }}>Giá mỗi đêm:[{`${price[0]} $`}, {`${price[1]} $`}]</h5>
@@ -113,6 +138,22 @@ function HomePage() {
                 <div className='homePage__body__hotel'
                     style={showMap ? { display: "none" } : {}}
                 >
+                    <div className='homePage__body__sort'>
+                        <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
+                            <InputLabel id="demo-select-small">Sort</InputLabel>
+                            <Select
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                value={selectChoose}
+                                label="Sort"
+                                onChange={handleSortChange}
+                            >
+                                {chooses.map((choose, index) =>
+                                    <MenuItem key={index} value={choose.id}>{choose.name}</MenuItem>
+                                )}
+                            </Select>
+                        </FormControl>
+                    </div>
                     <Card />
                     <Card />
                     <Card />

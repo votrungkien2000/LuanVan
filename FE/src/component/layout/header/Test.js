@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -22,6 +22,11 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const navigate = useNavigate()
+  const handleClickLogout = ()=>{
+        localStorage.clear();
+        navigate('/login');
+  }
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -88,7 +93,7 @@ export default function AccountMenu() {
             Settings
           </MenuItem>
         </Link>
-        <MenuItem>
+        <MenuItem onClick={handleClickLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

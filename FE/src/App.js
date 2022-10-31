@@ -4,6 +4,7 @@ import Login from './view/login/Login';
 import Register from 'view/register/Register'
 import Profile from 'view/profile/Profile.js'
 import LayoutDefault from './component/layout/Layout';
+import PrivateRoute from 'component/private/PrivateRouter';
 import './App.scss';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -16,9 +17,10 @@ function App() {
       <Routes>
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
-        <Route path='/' element={<LayoutDefault />}>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/profile' element={<Profile />} />
+      
+        <Route path='/' element={<PrivateRoute><LayoutDefault /></PrivateRoute>}>
+          <Route path='/' element={<PrivateRoute><HomePage /></PrivateRoute>} />
+          <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>} />
         </Route>
       </Routes>
     </div>

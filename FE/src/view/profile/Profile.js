@@ -1,51 +1,99 @@
 import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Calendar } from 'primereact/calendar';
 import User from 'services/user.service'
+import moment from 'moment/moment';
+import TextField from '@mui/material/TextField';
 import 'asset/style/profile.css'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import ProvinceService from 'services/province.service';
+import DistrictService from 'services/district.service';
 const userService = new User()
+const provinceService = new ProvinceService();
+const districtService = new DistrictService();
 
 function Profile() {
-    let today = new Date();
-    let month = today.getMonth();
-    let year = today.getFullYear();
-    let prevMonth = (month === 0) ? 11 : month - 1;
-    let prevYear = (prevMonth === 11) ? year - 1 : year;
-    let nextMonth = (month === 11) ? 0 : month + 1;
-    let nextYear = (nextMonth === 0) ? year + 1 : year;
     const [userName, setUserName] = useState('');
     const getAPI = async () => {
+        const id = localStorage.getItem('id')
         try {
-            const result = await userService.getUserById('634e5df195d39c906bfde4f9')
+            const result = await userService.getUserById(id)
+            console.log(result)
             setUserName(result.data.data[0].userName)
             setDate(result.data.data[0].birthDate)
             setNumberPhone(result.data.data[0].numberPhone)
-            setProvince(result.data.data[0].province)
-            setDistrict(result.data.data[0].district)
+            setSelectProvince(result.data.data[0].province._id)
+            setSelectDistrict(result.data.data[0].district._id)
             setEmail(result.data.data[0].email)
         } catch (error) {
             console.log(error)
         }
     }
     const onChangeDate = (e) => {
-        setDate(e.value)
+        setDate(e.target.value)
+    }
+    function formatInputDate(dateString) {
+        let date = new Date(Date.now());
+        if (dateString !== '')
+            date = new Date(dateString);
+        return moment(date).format('YYYY-MM-DD');
     }
     const [date, setDate] = useState(null);
     const [img, setImg] = useState(null)
     const [numberPhone, setNumberPhone] = useState('');
-    const [province, setProvince] = useState('');
-    const [district, setDistrict] = useState('');
+    const [selectProvince, setSelectProvince] = useState('');
+    const [provinces, setProvinces] = useState([])
+    const [districts, setDistricts] = useState([]);
+    const [selectDistrict, setSelectDistrict] = useState('');
     const [email, setEmail] = useState('');
     const changeImg = (e) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
         setImg(file)
     }
-    useEffect(() => { getAPI() }, [])
+
+    const getProvince = async () => {
+        try {
+            const result = await provinceService.getAll()
+            setProvinces(result.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const getDistrict = async (idProvince) => {
+        try {
+            const result = await districtService.getDistrict(idProvince)
+            setDistricts(result.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const onChangeProvince = async (e) => {
+        setSelectProvince(e.target.value);
+        try {
+            const result = await districtService.getDistrict(e.target.value)
+            setDistricts(result.data.data)
+            setSelectDistrict(result.data.data[0]._id)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const onChangeDistrict = (e) => {
+        setSelectDistrict(e.target.value);
+    }
+
+
+    useEffect(() => {
+        getAPI()
+        getProvince()
+    }, [])
+    useEffect(() => {
+        getDistrict(selectProvince)
+    }, [selectProvince])
     return (
         <div className="profile">
             <div className='p-fluid grid formgrid profile__info'>
@@ -76,35 +124,47 @@ function Profile() {
                         </div>
                         <div className='profile__info__content__right__body'>
                             <div className='profile__info__content__left'>
-                            <div className="field col-12 md:col-4">
-                                    <label htmlFor="username1" className="block">Email</label>
-                                    <InputText id="username1" defaultValue={email} onChange={(e) => setEmail(e.value)} aria-describedby="username1-help" className="block " />
+                                <div className="field col-12 md:col-4">
+                                    <TextField className='textField' id="outlined-basic" value={email} onChange={(e) => setEmail(e.value)} label="email" variant="outlined" />
                                 </div>
                                 <div className="field col-12 md:col-4">
-                                    <label htmlFor="username1" className="block">Username</label>
-                                    <InputText id="username1" defaultValue={userName} onChange={(e) => setUserName(e.value)} aria-describedby="username1-help" className="block " />
+                                    <TextField className='textField' id="outlined-basic" value={userName} onChange={(e) => setUserName(e.value)} label="full name" variant="outlined" />
                                 </div>
                                 <div className="field col-12 md:col-4">
-                                    <label htmlFor="username1" className="block">Date of birth</label>
-                                    <Calendar id="icon"
-                                        value={new Date(date)}
-                                        onChange={onChangeDate} showIcon
-                                    />
+                                    <TextField className='textField' type="date"
+                                        value={date ? formatInputDate(date) : formatInputDate('')}
+                                        onChange={onChangeDate} showIcon></TextField>
                                 </div>
-                               
+
                             </div>
                             <div className='profile__info__content__right'>
                                 <div className="field col-12 md:col-4">
-                                    <label htmlFor="username1" className="block">Province</label>
-                                    <InputText id="username1" defaultValue={province} onChange={(e) => setUserName(e.value)} aria-describedby="username1-help" className="block " />
+                                    <TextField className='textField' id="outlined-basic" value={numberPhone} onChange={(e) => setNumberPhone(e.value)} label="number phone" variant="outlined" />
                                 </div>
                                 <div className="field col-12 md:col-4">
-                                    <label htmlFor="username1" className="block">Number Phone</label>
-                                    <InputText id="username1" aria-describedby="username1-help" value={numberPhone} onChange={(e) => setNumberPhone(e.value)} className="block" />
+                                    <Select className='select__adress'
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={selectProvince}
+                                        label="Province"
+                                        onChange={onChangeProvince}
+                                    >
+                                        {provinces.map((province, index) =>
+                                            <MenuItem value={province._id} key={index}>{province.nameProvince}</MenuItem>
+                                        )}
+                                    </Select>
                                 </div>
                                 <div className="field col-12 md:col-4">
-                                    <label htmlFor="username1" className="block">District</label>
-                                    <InputText id="username1" defaultValue={district} onChange={(e) => setDistrict(e.value)} aria-describedby="username1-help" className="block " />
+                                    <Select className='select__adress'
+                                        id="demo-simple-select"
+                                        value={selectDistrict}
+                                        label="District"
+                                        onChange={onChangeDistrict}
+                                    >
+                                        {districts.map((district, index) =>
+                                            <MenuItem value={district._id} key={index}>{district.nameDistrict}</MenuItem>
+                                        )}
+                                    </Select>
                                 </div>
                             </div>
                         </div>

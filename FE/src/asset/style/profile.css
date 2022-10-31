@@ -56,7 +56,8 @@
 .profile__info__content__right__body{
     display: flex;
     justify-content: space-between;
-    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 .profile__info__content__left{
     width: 47%;
@@ -82,11 +83,13 @@
 .p-button-info1{
     width: 150px !important;
 }
-.p-inputtext{
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    height: 100%;
-    border: 1px solid var(--shape) !important;
+.textField{
+    width: 100%;
+    margin-bottom: 10px !important;
+}
+.select__adress{
+    width: 100%;
+    margin-bottom: 10px;
 }
 @media only screen and (max-width: 50.1875rem) {
     .profile__info {
@@ -110,6 +113,7 @@
     }
     .profile__info__content__right__body{
         display: flex;
+        width: 100% ;
         flex-direction: column;
     }
     .profile__info__content__left{

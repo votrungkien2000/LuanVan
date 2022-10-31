@@ -1,8 +1,8 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 
-const url = "https://phongtro123.com";
-const baseUrl = "https://phongtro123.com/";
+const url = "https://vi.hotels.com/";
+// const baseUrl = "https://phongtro123.com/";
 const room_data = [];
 
 // const RoomModel = require('../Models/Room')
