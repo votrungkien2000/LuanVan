@@ -1,0 +1,11 @@
+.infomation__service{
+    width: 100%;
+}
+.infomation__service__list{
+    display: flex;
+    justify-content: space-evenly;
+}
+.infomation__service__list__item{
+    /* list-style: none; */
+    width: 170px;
+}
