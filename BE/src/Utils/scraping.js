@@ -1,18 +1,73 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-// const url = "https://www.booking.com/index.vi.html?aid=336510&label=melbourne-biF21fFWLuf31kP48lLVsAS154363258292%3Apl%3Ata%3Ap1%3Ap2260%2C000%3Aac%3Aap%3Aneg%3Afi%3Atiaud-297601666515%3Akwd-40826943%3Alp9053233%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YXL5GV3cgz10NyjSyBn12N8&sid=a9f5c3e68e5e1879fe8b8ee80f3c5b2c&click_from_logo=1";
+const listProvinces = [
+    "da-lat",
+    "ha-noi",
+    "hoi-an",
+    "ho-chi-minh",
+    "hue",
+    "con-dao",
+    "cat-ba",
+    "ninh-binh",
+    "moc-chau",
+    "quang-binh",
+    "ha-giang",
+    "buon-ma-thuot",
+    "tuy-hoa",
+    "phan-thiet",
+    "can-tho",
+    "vung-tau",
+    "ha-nam",
+    "thanh-hoa",
+    "lang-son",
+    "phu-yen",
+    "vinh-phuc",
+    "binh-thuan",
+    "nghe-an",
+    "ben-tre",
+    "hoa-binh",
+    "cao-bang",
+    "ha-tinh",
+    "quang-ninh",
+    "phu-tho",
+    "tay-ninh",
+    "binh-dinh",
+    "hai-phong",
+    "ninh-thuan",
+    "cua-hoi",
+    "mong-cai",
+]
+const listLinkProvince = []
+const listLinkProvinceItem = []
+function getlink() {
+    for (var listProvince of listProvinces) {
+        const link = `https://www.bestprice.vn/khach-san/${listProvince}#startdate=12/11/2022&night=1&ADT=2&CHD=0&INF=0`
+        listLinkProvince.push(link);
+    }
+    return listLinkProvince;
+}
 
-const getData = async () => {
+const getLinkItem = async () => {
+    const linkProvince = getlink()
     try {
-        const response = await axios.get("https://www.bestprice.vn/khach-san/vinpearl-resort-spa-ha-long-1344.html")
-        const $ = cheerio.load(response.data)
-        const getlink = $(".field-item p").text();
-        console.log(getlink)
+        for (var listLinkProvinceTitle of linkProvince) {
+            const response = await axios.get(listLinkProvinceTitle).catch(function (error) {})
+            const $ = cheerio.load(response.data)
+            const getlink = $(".bpv-list-item.hotel-ids")
+            getlink.each(function () {
+                hrefTamp = $(this).find(".item-name a").attr("href");
+                if (hrefTamp !== undefined) {
+                    href = `https://www.bestprice.vn${hrefTamp}`
+                    listLinkProvinceItem.push(href);
+                }
+            });
+        }
+        return listLinkProvinceItem
     } catch (error) {
         console.log(error)
     }
 }
-getData()
+getLinkItem()
 // const listAdress = []
 // const listPage = []
 // const linkToHotel = []
@@ -77,7 +132,7 @@ getData()
 //         } catch (error) {
 //             console.log(error)
 //         }
-// } 
+// }
 // const getPage = async () => {
 //     try {
 //         const linkPage = await getData(url)
