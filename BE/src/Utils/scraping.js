@@ -38,117 +38,86 @@ const listProvinces = [
     "mong-cai",
 ]
 const listLinkProvince = []
+const listLinkProvincePage = [[]]
 const listLinkProvinceItem = []
+const infomationHotels = [{}]
 function getlink() {
     for (var listProvince of listProvinces) {
-        const link = `https://www.bestprice.vn/khach-san/${listProvince}#startdate=12/11/2022&night=1&ADT=2&CHD=0&INF=0`
+        const link = `https://www.bestprice.vn/khach-san/${listProvince}`
         listLinkProvince.push(link);
     }
     return listLinkProvince;
 }
 
+const getPage = async () => {
+    const linkProvincePages = getlink()
+    // for(i =0 ; i<linkProvincePages.length ; i++){
+    for (i = 0; i < 2; i++) {
+        listLinkProvincePage[i] = new Array();
+        listLinkProvincePage[i].push(linkProvincePages[i]);
+        const response = await axios.get(linkProvincePages[i])
+        const $ = cheerio.load(response.data)
+        const getlinkPage = $(".pagination li")
+        getlinkPage.each(function () {
+            hrefPage = $(this).find("a").attr("href")
+            if (hrefPage !== undefined && !listLinkProvincePage[i].includes(hrefPage)) {
+                listLinkProvincePage[i].push(hrefPage)
+            }
+        })
+    }
+    return listLinkProvincePage
+}
 const getLinkItem = async () => {
-    const linkProvince = getlink()
+    await getPage()
     try {
-        for (var listLinkProvinceTitle of linkProvince) {
-            const response = await axios.get(listLinkProvinceTitle).catch(function (error) {})
-            const $ = cheerio.load(response.data)
-            const getlink = $(".bpv-list-item.hotel-ids")
-            getlink.each(function () {
-                hrefTamp = $(this).find(".item-name a").attr("href");
-                if (hrefTamp !== undefined) {
-                    href = `https://www.bestprice.vn${hrefTamp}`
-                    listLinkProvinceItem.push(href);
-                }
-            });
+        for (i = 0; i < listLinkProvincePage.length; i++) {
+            for (j = 0; j < listLinkProvincePage[i].length; j++) {
+                const response = await axios.get(listLinkProvincePage[i][j])
+                const $ = cheerio.load(response.data)
+                const getlink = $(".bpv-list-item.hotel-ids")
+                getlink.each(function () {
+                    hrefTamp = $(this).find(".item-name a").attr("href");
+                    if (hrefTamp !== undefined) {
+                        href = `https://www.bestprice.vn${hrefTamp}`
+                        getInformationHotel(href)
+                        // listLinkProvinceItem.push(href);
+                    }
+
+                });
+            }
         }
+        console.log(listLinkProvinceItem)
         return listLinkProvinceItem
     } catch (error) {
         console.log(error)
     }
 }
+const getInformationHotel = async (link) => {
+    const listService = []
+    const response = await axios.get(link)
+    const $ = cheerio.load(response.data)
+    hotelName = $(".header-name h1").text()
+    address = $(".item-address").text()
+    picture = $(".item img").attr("src")
+    hotelInfo = $("#about_hotel p").text()
+    price = $(".hidden-xs .text-price span").text()
+    point = $(".review-number span").text()
+    // get service
+    service = $(".item")
+    service.each(function(){
+        serviceName = $(this).find(".facilities-name").text()
+        // console.log(serviceName)
+        if(serviceName!==undefined || serviceName!=='' || serviceName!==null){
+            listService.push(serviceName)
+        }
+    })
+    if (picture !== undefined && hotelName !== undefined) {
+        infomationHotels.push({ hotelName, address, hotelInfo, price, point, picture, listService })
+    }
+    console.log(infomationHotels)
+    return infomationHotels
+}
 getLinkItem()
-// const listAdress = []
-// const listPage = []
-// const linkToHotel = []
-// const detailHotels = []
-
-
-// const getData = async (url) => {
-//     try {
-//         const response = await axios.get(url)
-//         const $ = cheerio.load(response.data)
-//         const getlink = $(".bui-carousel__item");
-//         getlink.each(function () {
-//             href = $(this).find(".popular-destinations-carousel-link").attr("href");
-//             if (href !== undefined) {
-//                 listAdress.push({ href })
-//             }
-//         });
-//         // for (const Adress of listAdress) {
-//         //     await getPage(Adress.href)
-//         // }
-//         // console.log(listAdress)
-//         return listAdress
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
-// const getLinkDetail = async () => {
-//     try {
-//         const listPageHotel = await getPage()
-//         for (detailHotelPage of listPageHotel) {
-//             const response = await axios.get(detailHotelPage)
-//             const $ = cheerio.load(response.data)
-//             const getLinkDetail = $(".a826ba81c4")
-//             getLinkDetail.each(function () {
-//                 href = $(this).find(".a4225678b2 a").attr("href")
-//                 linkToHotel.push(href)
-//             })
-//         }
-//         return linkToHotel;
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-// const getDetail = async ()=> {
-//         try {
-//             const listLink = await getLinkDetail()
-//             for(link of listLink){
-//                 // console.log(link)
-//                 if(link !== undefined) {
-//                     const response = await axios.get(link)
-//                     const $ = cheerio.load(response.data)
-//                     const hotel = $(".d2fee87262.pp-header__title")
-//                     console.log(hotel)
-//                     // hotel.each(function(){
-//                     //     nameHotel = $(this).find(".page-section .d2fee87262").text()
-//                     //     console.log(nameHotel)
-//                     // })
-//                 }
-//             }
-//             return listLink
-//         } catch (error) {
-//             console.log(error)
-//         }
-// }
-// const getPage = async () => {
-//     try {
-//         const linkPage = await getData(url)
-//         for (Data of linkPage) {
-//             const response = await axios.get(Data.href)
-//             const $ = cheerio.load(response.data)
-//             // console.log(typeof parseInt($(".a8b500abde").children("li").last().children("button").text()))
-//             for (let i = 1; i <= 2; i++) {
-//                 let nextPage = Data.href + `offset=${25 * i - 25}`;
-//                 listPage.push(nextPage)
-//             }
-//             return listPage
-//         }
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
-// module.exports = getDetail
+// getInformationHotel()
+// getlink()
+//  module.exports = getDetail
