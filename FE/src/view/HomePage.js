@@ -10,9 +10,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ProvinceService from 'services/province.service';
 import DistrictService from 'services/district.service';
+import HotelService from 'services/hotel.service';
 
 const provinceService = new ProvinceService();
 const districtService = new DistrictService();
+const hotelService = new HotelService();
 
 function HomePage() {
     const kindRoom = [
@@ -27,6 +29,7 @@ function HomePage() {
     const [price, setPrice] = useState([0, 500]);
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectChoose, setSelectChoose] = useState('1')
+    const [hotels, setHotels] = useState([]);
     const [chooses, setChooses] = useState([
         {
             id: 1,
@@ -42,6 +45,14 @@ function HomePage() {
         }
 
     ])
+    const  getHotelAll = async () => {
+        try {
+            const result = await hotelService.getHotelAll()
+            setHotels(result.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const handleSortChange = (e) => {
         setSelectChoose(e.target.value)
     }
@@ -72,20 +83,21 @@ function HomePage() {
 
     const onLoadingClick = () => {
     }
-    const getAll = async () => {
+    const getAllProvince = async () => {
         try {
-            const result = await provinceService.getAll()
+            const result = await provinceService.getAllProvince()
             setProvince(result.data.data)
         } catch (error) {
             console.log(error)
         }
     }
     useEffect(() => {
+        getHotelAll()
         if (selectedProvince !== null) {
             setdisabledDistrict(false)
         }
         if (province.length === 0) {
-            getAll()
+            getAllProvince()
         }
     }, [selectedProvince])
     return (
@@ -154,15 +166,12 @@ function HomePage() {
                             </Select>
                         </FormControl>
                     </div>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
+                    {hotels.length !== 0 ? hotels.map((ele, index)=>{
+                        console.log(ele)
+                        return <Card key={index} hotel={ele}/>
+                    }) : <div></div>}
+                    {/* <Card/>
+                    <Card/> */}
                 </div>
                 <div className={`homePage__body_map ${showMap ? 'homePage__body_map_show' : ''}`}>
                     <div className='homePage__body__map__item'>

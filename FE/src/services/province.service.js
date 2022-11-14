@@ -2,7 +2,7 @@ const { default: BaseService } = require("./base.service")
 
 class ProvinceService extends BaseService {
 
-    getAll = async () => {
+    getAllProvince = async () => {
         const result = await this.api.get('/api/province/getallprovince');
         return result;
     }

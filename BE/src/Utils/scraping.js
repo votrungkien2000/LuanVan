@@ -42,11 +42,15 @@ const listLinkProvincePage = [[]]
 const listLinkProvinceItem = []
 const infomationHotels = [{}]
 function getlink() {
-    for (var listProvince of listProvinces) {
-        const link = `https://www.bestprice.vn/khach-san/${listProvince}`
-        listLinkProvince.push(link);
-    }
-    return listLinkProvince;
+    // for (var listProvince of listProvinces) {
+    //     const link = `https://www.bestprice.vn/khach-san/${listProvince}`
+    //     listLinkProvince.push(link);
+    // }
+    const arr = listProvinces.map(row => {
+        const link = `https://www.bestprice.vn/khach-san/${row}`;
+        return link;
+    }) 
+    return arr;
 }
 
 const getPage = async () => {
@@ -79,45 +83,60 @@ const getLinkItem = async () => {
                     hrefTamp = $(this).find(".item-name a").attr("href");
                     if (hrefTamp !== undefined) {
                         href = `https://www.bestprice.vn${hrefTamp}`
-                        getInformationHotel(href)
-                        // listLinkProvinceItem.push(href);
+                        // getInformationHotel(href)
+                        listLinkProvinceItem.push(href);
                     }
 
                 });
             }
         }
-        console.log(listLinkProvinceItem)
+        // console.log(listLinkProvinceItem)
         return listLinkProvinceItem
     } catch (error) {
         console.log(error)
     }
 }
-const getInformationHotel = async (link) => {
+const getInformationHotel = async () => {
+    const linkItemHotel = await getLinkItem()
+    // console.log(linkItemHotel)
     const listService = []
-    const response = await axios.get(link)
-    const $ = cheerio.load(response.data)
-    hotelName = $(".header-name h1").text()
-    address = $(".item-address").text()
-    picture = $(".item img").attr("src")
-    hotelInfo = $("#about_hotel p").text()
-    price = $(".hidden-xs .text-price span").text()
-    point = $(".review-number span").text()
-    // get service
-    service = $(".item")
-    service.each(function(){
-        serviceName = $(this).find(".facilities-name").text()
-        // console.log(serviceName)
-        if(serviceName!==undefined || serviceName!=='' || serviceName!==null){
-            listService.push(serviceName)
+    let yu = 0
+    for(var item of linkItemHotel ){
+        const response = await axios.get(item)
+        const $ = cheerio.load(response.data)
+        hotelName = $(".header-name h1").text()
+        address = $(".item-address").text()
+        picture = $(".item img").attr("src")
+        hotelInfo = $("#about_hotel p").text()
+        price = $(".hidden-xs .text-price span").text().split("đ")[0]
+        point = $(".review-number span").text().substring(0, 3)
+        star = $(".header-addr span").attr("class").split("star-")[1]
+        // get service
+        service = $(".item .facilities-name").text();
+        // console.log(service)
+        // await service.each(function(){
+        //     serviceName = $(this).find("").text()
+        //         if(serviceName!==''){
+        //             listService.push(serviceName)
+        //         }
+        // })
+        // let str = String(service);
+        // const arr = [];
+        // while(str !== ''){
+        //     let strArr = str.split("");
+        //     const index = strArr.findIndex((ele) => {
+        //         return ele === ele.toUpperCase()
+        //     })
+            
+        // }
+        if (picture !== undefined && hotelName !== undefined) {
+            infomationHotels.push({ hotelName, address, hotelInfo, price, point, picture, star })
         }
-    })
-    if (picture !== undefined && hotelName !== undefined) {
-        infomationHotels.push({ hotelName, address, hotelInfo, price, point, picture, listService })
     }
-    console.log(infomationHotels)
+    // console.log(infomationHotels)
     return infomationHotels
 }
-getLinkItem()
+
 // getInformationHotel()
 // getlink()
-//  module.exports = getDetail
+ module.exports = getInformationHotel

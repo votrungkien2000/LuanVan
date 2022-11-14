@@ -39,7 +39,7 @@
 }
 
 .Card__info__left {
-    min-width: 49%;
+    min-width:100%;
 }
 
 .Card__info__left_nameHL {
