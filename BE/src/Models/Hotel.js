@@ -13,6 +13,12 @@ const Hotel = new Schema(
         type: String
     },
     price: {
+        type: Number
+    },
+    latitude:{
+        type: String
+    },
+    longitude:{
         type: String
     },
     point: {
@@ -20,9 +26,6 @@ const Hotel = new Schema(
     },
     picture: {
         type: String
-    },
-    listService: {
-        type: Array
     },
     star: {
         type: Number

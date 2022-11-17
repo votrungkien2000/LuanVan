@@ -17,35 +17,34 @@ const districtService = new DistrictService();
 const hotelService = new HotelService();
 
 function HomePage() {
-    const kindRoom = [
-        { name: 'Phòng đơn', id: 1 },
-        { name: 'Phòng đôi', id: 2 },
-
-    ];
     const [province, setProvince] = useState([]);
     const [District, setDistrict] = useState([]);
     const [showMap, setShowMap] = useState(false)
     const [disabledDistrict, setdisabledDistrict] = useState(true)
-    const [price, setPrice] = useState([0, 500]);
+    const [price, setPrice] = useState([500000, 5000000]);
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectChoose, setSelectChoose] = useState('1')
     const [hotels, setHotels] = useState([]);
     const [chooses, setChooses] = useState([
         {
             id: 1,
-            name: 'Our Suggestions'
+            name: '----Mặc định----'
         },
         {
             id: 2,
-            name: 'search by rank'
+            name: 'Theo gợi ý của chúng tôi'
         },
         {
             id: 3,
-            name: 'search by rating'
+            name: 'Sắp xếp theo sao'
+        },
+        {
+            id: 4,
+            name: 'Sắp xếp theo giá'
         }
 
     ])
-    const  getHotelAll = async () => {
+    const getHotelAll = async () => {
         try {
             const result = await hotelService.getHotelAll()
             setHotels(result.data.data)
@@ -55,6 +54,26 @@ function HomePage() {
     }
     const handleSortChange = (e) => {
         setSelectChoose(e.target.value)
+        if(e.target.value === 1){
+            getHotelAll()
+        }
+        if (e.target.value === 2) {
+            getHotelBySearchHistoryUI(localStorage.getItem("id"))
+        }
+        if (e.target.value === 3) {
+            hotels.sort((a, b) =>
+                a.star - b.star
+            )
+        }
+        if (e.target.value === 4) {
+            hotels.sort((a, b) =>
+            a.price - b.price
+            )
+        }
+    }
+    const getHotelBySearchHistoryUI = async (id) =>{
+        const result = await hotelService.getHotelBySearchHistory(id)
+        setHotels(result.data.data)
     }
     const getDistrict = async (idProvince) => {
         try {
@@ -76,13 +95,7 @@ function HomePage() {
     const onChangeDistrict = (e) => {
         setSelectedDistrict(e.value);
     }
-    const [selectedkindRoom, setSelectedkindRoom] = useState(null);
-    const onChangekindRoom = (e) => {
-        setSelectedkindRoom(e.value);
-    }
 
-    const onLoadingClick = () => {
-    }
     const getAllProvince = async () => {
         try {
             const result = await provinceService.getAllProvince()
@@ -92,7 +105,6 @@ function HomePage() {
         }
     }
     useEffect(() => {
-        getHotelAll()
         if (selectedProvince !== null) {
             setdisabledDistrict(false)
         }
@@ -100,6 +112,32 @@ function HomePage() {
             getAllProvince()
         }
     }, [selectedProvince])
+    useEffect(() => {
+        getHotelAll()
+    }, [])
+    const handleSearch = async () => {
+        try {
+            let nameProvince = '';
+            let nameDistrict = '';
+            for (var item of province) {
+                if (selectedProvince === item._id) {
+                    nameProvince = item.nameProvince;
+                }
+            }
+            for (var item of District) {
+                if (selectedDistrict === item._id) {
+                    nameDistrict = item.nameDistrict.substring(item.nameDistrict.indexOf(" ") + 1, item.nameDistrict.length);
+                }
+            }
+            const result = await hotelService.getHotelBySearch(nameProvince, nameDistrict, price)
+            if (result.status === 200) {
+                setHotels(result.data.data)
+            }
+        } catch (error) {
+            console.log("Server error")
+        }
+        setSelectChoose(1)
+    }
     return (
         <div className='homePage'>
             <div className='homePage__search'>
@@ -112,7 +150,7 @@ function HomePage() {
                             onChange={onChangeProvince}
                             optionLabel="nameProvince"
                             optionValue='_id'
-                            placeholder="Province"
+                            placeholder="Chọn tỉnh"
                         />
                         <Dropdown
                             className='homePage__search__Dropdown'
@@ -122,23 +160,15 @@ function HomePage() {
                             optionValue='_id'
                             onChange={onChangeDistrict}
                             optionLabel="nameDistrict"
-                            placeholder="District"
-                        />
-                        <Dropdown
-                            className='homePage__search__Dropdown'
-                            value={selectedkindRoom}
-                            options={kindRoom}
-                            onChange={onChangekindRoom}
-                            optionLabel="name"
-                            placeholder="kindRoom"
+                            placeholder="Chọn huyện"
                         />
                     </div>
                     <div className='homePage__search__price'>
                         <div className='homePage__search__price__slider' style={{ width: "200px", marginRight: "20px" }}>
-                            <h5 style={{ fontSize: "1rem" }}>Giá mỗi đêm:[{`${price[0]} $`}, {`${price[1]} $`}]</h5>
-                            <Slider min={0} max={500} value={price} onChange={(e) => setPrice(e.value)} range />
+                            <h5 style={{ fontSize: "1rem" }}>[{`${price[0]}đ`}, {`${price[1]}đ`}]</h5>
+                            <Slider min={500000} max={5000000} value={price} onChange={(e) => setPrice(e.value)} range />
                         </div>
-                        <Button className='homePage__search__price__btn' style={{ border: "1px solid var(--hover)", borderRadius: "8px", height: "45px", backgroundColor: "var(--bs-btn-bg)", fontWeight: "500" }} label="Search" onClick={onLoadingClick} />
+                        <Button className='homePage__search__price__btn' style={{ border: "1px solid var(--hover)", borderRadius: "8px", height: "45px", backgroundColor: "var(--bs-btn-bg)", fontWeight: "500" }} label="Tìm kiếm" onClick={handleSearch} />
                     </div>
                 </div>
 
@@ -166,12 +196,9 @@ function HomePage() {
                             </Select>
                         </FormControl>
                     </div>
-                    {hotels.length !== 0 ? hotels.map((ele, index)=>{
-                        console.log(ele)
-                        return <Card key={index} hotel={ele}/>
+                    {hotels.length !== 0 ? hotels.map((ele, index) => {
+                        return <Card key={index} hotel={ele} />
                     }) : <div></div>}
-                    {/* <Card/>
-                    <Card/> */}
                 </div>
                 <div className={`homePage__body_map ${showMap ? 'homePage__body_map_show' : ''}`}>
                     <div className='homePage__body__map__item'>

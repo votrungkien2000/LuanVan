@@ -98,16 +98,9 @@ exports.login = async (user) => {
             return ErrorHander(400, "wrong password");
         }
         const createToken = CreateToken({id: result._id})
-        console.log(result._id)
         return SuccessHander(200, "Create category success", { result, createToken });
     } catch (err) {
         console.log(err)
         return ErrorHander(500, "Get all faild");
     }
-}
-
-exports.scraping = async () => {
-    const result = await getRoomDetail();
-    console.log(result)
-    return SuccessHander(200, "Create category success", result);
 }

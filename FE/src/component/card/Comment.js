@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ProgressBar } from 'primereact/progressbar';
 import 'asset/style/comment.css'
-function Comment() {
+function Comment(props) {
     let color = "#005f00"
     const [img, setImg] = useState(0);
     const handleImg = () => {
@@ -19,8 +19,8 @@ function Comment() {
                 <div className='Comment__box_pointEvaluation'>
                     <div className='Comment__box_pointEvaluation__value'>
                         <div className='Comment__box_pointEvaluation__value__scores'>
-                            <span style={{ fontSize: "2rem", backgroundColor: color, borderRadius: "100px", color: "#fff" }}
-                                className='Card__info__left__comment__span'>&nbsp;&nbsp;7.9&nbsp;&nbsp;
+                            <span style={{ fontSize: "1.5rem", backgroundColor: color, borderRadius: "100px", color: "#fff" }}
+                                className='Card__info__left__comment__span'>&nbsp;&nbsp;{props.point===''?'Đang đánh giá':props.point}&nbsp;&nbsp;
                             </span>
                         </div>
                     </div>

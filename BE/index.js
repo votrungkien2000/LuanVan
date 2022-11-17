@@ -34,6 +34,7 @@ app.use('/', require('./src/Routers/UserRouters'));
 app.use('/', require('./src/Routers/ProvinceRouters'));
 app.use('/', require('./src/Routers/DistrictsRouters'));
 app.use('/', require('./src/Routers/HotelRouters'));
+app.use('/', require('./src/Routers/HistoryRouters'));
 
 
 
