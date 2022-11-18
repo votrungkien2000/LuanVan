@@ -20,7 +20,6 @@ module.exports = {
     getDistricts: async (req, res) => {
         try {
             const {idProvince} = req.query;
-             console.log(idProvince)
             const result = await getDistricts(idProvince)
             return res.status(200).json(result);
         } catch (err) {

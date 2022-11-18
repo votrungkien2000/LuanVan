@@ -9,7 +9,6 @@ module.exports = {
       const idUser = req.body.idUser;
       const star = req.body.star;
       const price = req.body.price;
-      console.log(idUser, star, price)
       const result = await addHistory(idUser, star, price);
       return res.status(200).json(result);
     } catch (err) {

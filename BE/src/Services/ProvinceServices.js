@@ -27,7 +27,6 @@ exports.add = async (list) => {
 exports.getAllProvince = async () => {
     try {
         const result = await Province.find({})
-        console.log(result)
         return SuccessHander(200, "Create category success", result);
 
     } catch (err) {

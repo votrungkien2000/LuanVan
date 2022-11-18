@@ -17,10 +17,7 @@ exports.add = (list) => {
 }
 exports.getDistricts = async (idProvince) => {
     try {       
-
-       
         const result = await District.find({idProvince: idProvince})
-        console.log(idProvince)
         return SuccessHander(200, "Create category success", result);
 
     } catch (err) {

@@ -7,7 +7,6 @@ import User from 'services/user.service'
 import moment from 'moment/moment';
 import TextField from '@mui/material/TextField';
 import 'asset/style/profile.css'
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import ProvinceService from 'services/province.service';
@@ -58,7 +57,7 @@ function Profile() {
 
     const getProvince = async () => {
         try {
-            const result = await provinceService.getAll()
+            const result = await provinceService.getAllProvince()
             setProvinces(result.data.data)
         } catch (error) {
             console.log(error)
