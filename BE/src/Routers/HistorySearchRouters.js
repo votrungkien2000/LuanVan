@@ -1,7 +1,9 @@
 const express = require("express");
 const route = express.Router();
-const { addHistorySearch } = require("../Controllers/HistorySearchController.js");
+const { addHistorySearch, getAllProvinceByMonth, getAllProvinceByYear } = require("../Controllers/HistorySearchController.js");
 
 route.post('/api/addHistorySearch', addHistorySearch)
+route.get('/api/getAllProvinceByMonth', getAllProvinceByMonth)
+route.get('/api/getAllProvinceByYear', getAllProvinceByYear)
 
-module.exports = route
+module.exports = route 

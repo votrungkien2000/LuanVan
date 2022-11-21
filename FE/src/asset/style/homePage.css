@@ -56,11 +56,12 @@
 
 .homePage__body {
     display: flex;
+    justify-content: space-between;
     padding: 20px;
 }
 
 .homePage__body__hotel {
-    width: 50%;
+    width: 47%;
 }
 /* map */
 .homePage__body_map {

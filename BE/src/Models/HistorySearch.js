@@ -9,6 +9,12 @@ const HistorySearch = new Schema(
     searches: {
        type: Number
     },
+    month: {
+      type: Number
+   },
+   year: {
+      type: String
+   }
   },
   { timestamps: true }
 );

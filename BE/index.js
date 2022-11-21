@@ -35,7 +35,7 @@ app.use('/', require('./src/Routers/ProvinceRouters'));
 app.use('/', require('./src/Routers/DistrictsRouters'));
 app.use('/', require('./src/Routers/HotelRouters'));
 app.use('/', require('./src/Routers/HistoryRouters'));
-
+app.use('/', require('./src/Routers/HistorySearchRouters'));
 
 
 app.listen(PORT, ()=> { console.log(`Server is running on http://localhost:${PORT}`)});
