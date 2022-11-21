@@ -41,31 +41,31 @@ function Comment(props) {
                 </div>
                 <div className='Comment__box__rating'>
                     <div className='Comment__box__rating__item' style={{ width: "100%" }}>
-                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={83}></ProgressBar>
+                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={93}></ProgressBar>
                         <div className='Comment__box__rating__item__score'>
                             <strong>Rất tốt</strong>
-                            <span>&nbsp;(8.3/10)</span>
+                            <span>&nbsp;(9.3/10)</span>
                         </div>
                     </div>
                     <div className='Comment__box__rating__item' style={{ width: "100%" }}>
-                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={83}></ProgressBar>
+                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={85}></ProgressBar>
                         <div className='Comment__box__rating__item__score'>
                             <strong>Rất tốt</strong>
-                            <span>&nbsp;(8.3/10)</span>
+                            <span>&nbsp;(8.5/10)</span>
                         </div>
                     </div>
                     <div className='Comment__box__rating__item' style={{ width: "100%" }}>
-                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={83}></ProgressBar>
+                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={80}></ProgressBar>
                         <div className='Comment__box__rating__item__score'>
                             <strong>Rất tốt</strong>
-                            <span>&nbsp;(8.3/10)</span>
+                            <span>&nbsp;(8/10)</span>
                         </div>
                     </div>
                     <div className='Comment__box__rating__item' style={{ width: "100%" }}>
-                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={83}></ProgressBar>
+                        <ProgressBar className='Comment__box__rating__item__progessBar' style={{ marginBottom: "10px", width: "75%", height: "20px", backgroundColor: "var(--shape)", borderRadius: "8px" }} value={90}></ProgressBar>
                         <div className='Comment__box__rating__item__score'>
                             <strong>Rất tốt</strong>
-                            <span>&nbsp;(8.3/10)</span>
+                            <span>&nbsp;(9/10)</span>
                         </div>
                     </div>
                     

@@ -2,28 +2,26 @@ import { Chart } from 'primereact/chart';
 import * as React from 'react';
 import { useState, useEffect } from 'react'
 import MenuItem from '@mui/material/MenuItem';
+import { Button } from 'primereact/button';
 import Select from '@mui/material/Select';
-import 'asset/style/admin.css'
+import 'asset/style/admin.css';
+import HistorySearchService from 'services/HistorySrearch.service';
+import ProvinceService from 'services/province.service';
+
+const historySearchService = new HistorySearchService();
+const provinceService = new ProvinceService();
 
 function Admin() {
+    const date = new Date()
+    const [statistical, setStatistical] = useState()
     const [chartData, setChartData] = useState({
-        labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12', 'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+        labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
         datasets: [
             {
                 type: 'bar',
                 label: 'Dataset 1',
                 backgroundColor: '#66BB6A',
-                data: [
-                    21,
-                    100,
-                    24,
-                    75,
-                    37,
-                    65,
-                    34,
-                    34,
-                    87,
-                ],
+                data: statistical,
                 borderColor: 'white',
                 borderWidth: 1
             },
@@ -60,81 +58,70 @@ function Admin() {
         }
 
     });
-    const [age, setAge] = useState([
-        {
-            id: 1,
-            name: 'Tháng 1'
-        },
-        {
-            id: 2,
-            name: 'Tháng 2'
-        },
-        {
-            id: 3,
-            name: 'Tháng 3'
-        },
-        {
-            id: 4,
-            name: 'Tháng 4'
-        },
-        {
-            id: 5,
-            name: 'Tháng 5'
-        },
-        {
-            id: 6,
-            name: 'Tháng 6'
-        },
-        {
-            id: 7,
-            name: 'Tháng 7'
-        },
-        {
-            id: 8,
-            name: 'Tháng 8'
-        },
-        {
-            id: 9,
-            name: 'Tháng 9'
-        },
-        {
-            id: 10,
-            name: 'Tháng 10'
-        },
-        {
-            id: 11,
-            name: 'Tháng 11'
-        },
-        {
-            id: 12,
-            name: 'Tháng 12'
-        },
-    ]);
-    const [selectAge, setSelectAge] = useState(1)
+    const [province, setProvince] = useState([]);
+    const getAllProvince = async () => {
+        const results = await provinceService.getAllProvince()
+        setProvince(results.data.data)
+        setSelectprovince(results.data.data[0]._id)
+        getAllHistoryByMonth(results.data.data[0]._id, date.getFullYear())
+    }
+    const [selectprovince, setSelectprovince] = useState('')
     const handleChange = (e) => {
-        // setAge(e.target.value);
-        setSelectAge(e.target.value)
-        console.log(e.target.value)
+        // setProvince(e.target.value);
+        setSelectprovince(e.target.value)
+        getAllHistoryByMonth(e.target.value, date.getFullYear())
+        // getAllHistoryByMonth()
     };
-    useEffect(()=>{
-        setSelectAge(age[0].id)
+    const getAllHistoryByMonth = async (idProvince, year) => {
+
+        const results = await historySearchService.getAllHistoryProvinceSrearchByMonth(idProvince, year)
+        let arr = []
+        results.data.data.map((item) => {
+            arr.push(item.searches)
+        })
+        setStatistical(arr)
+        const datasets = [{
+            type: 'bar',
+            label: 'Tỉnh, Thành phố',
+            backgroundColor: '#66BB6A',
+            data: arr,
+            borderColor: 'white',
+            borderWidth: 1
+        }]
+        setChartData({
+            ...chartData,
+            datasets
+        })
+    }
+    useEffect(() => {
+        getAllProvince()
     }, [])
     return (
         <div className='admin'>
             <div className="admin__card">
                 <Chart type="bar" data={chartData} options={lightOptions} />
             </div>
+            <div className='admin__title'>
+                <h2>BIỂU ĐỒ THÔNG KÊ LƯỢT TÌM KIẾM</h2>
+            </div>
             <div className='admin__change'>
                 <Select
                     labelId="demo-simple-select-label"
-                    value={selectAge}
-                    label="Age"
+                    value={selectprovince}
+                    label="province"
                     onChange={handleChange}>
-                    {age.map((item, index)=> 
-                        <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
-                    )}
+                    {province.length !== 0 ? province.map((item, index) =>
+                        <MenuItem key={index} value={item._id}>{item.nameProvince}</MenuItem>
+                    ) : <div></div>}
                 </Select>
+                <div className='admin__change__downloadData'>
+                    <Button label="Tải dữ liệu" className="p-button-success" />
+                </div>
+                <div className='admin__change__SaveData'>
+                    <Button label="Sao lưu" className="p-button-success" />
+                </div>
             </div>
+
         </div>
     )
 }

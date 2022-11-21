@@ -61,7 +61,6 @@ exports.getHotelAllService = async (PAGE) => {
 
         } else {
             const result = await Hotel.find({})
-            console.log(result)
             return SuccessHander(200, "Create category success", result);
         }
     } catch (error) {
@@ -74,10 +73,6 @@ exports.getHotelBySearchService = async (province, district, price) => {
         let listPrice = []
         const result = await Hotel.find({ price: { $ne: '' } })
         for (item of result) {
-            // const priceArr = item.price.split('.').reduce((total, num) => {
-            //     return total + num;
-            // })
-            // const priceNum = Number(priceArr)
             if (price[0] <= item.price && item.price <= price[1]) {
                 listPrice.push(item)
             }
@@ -106,7 +101,6 @@ exports.getHotelBySearchHistoryService = async (idUser) => {
         const history = await History.find({ idUser: idUser }).sort({ createdAt: -1 })
         let min = history[0].price - 500000;
         let max = history[0].price + 500000;
-        console.log(min,)
         const result = await Hotel.find({})
         result.forEach((item, index) => {
             if (item.star === history[0].star) {
@@ -114,12 +108,8 @@ exports.getHotelBySearchHistoryService = async (idUser) => {
             }
 
             if (history[0].price !== 0) {
-                // let arr = hotelByHistory.filter(item => {
-                //     return  (item.price > min && item.price < max)
-                // })
                 let arr = []
                 for (item of hotelByHistory) {
-                    console.log(item.price)
                     if (item.price !== 0) {
                         if (min < item.price < max) {
                             arr.push(item)

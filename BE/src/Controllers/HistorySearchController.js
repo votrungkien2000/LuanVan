@@ -17,9 +17,9 @@ module.exports = {
     },
     getAllProvinceByMonth: async (req, res) => {
         try {
-            const month = req.query.month;
+            const idProvince = req.query.idProvince;
             const year = req.query.year;
-            const result = await getAllProvinceByMonth(month, year);
+            const result = await getAllProvinceByMonth(idProvince, year);
             return res.status(200).json(result);
         } catch (err) {
             return res.status(500).json({

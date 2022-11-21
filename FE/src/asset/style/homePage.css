@@ -24,7 +24,9 @@
     position: sticky;
     top: 60;
 }
-
+.p-dropdown-panel{
+    z-index: 0 !important;
+}
 .homePage__search__box {
     display: flex;
 }

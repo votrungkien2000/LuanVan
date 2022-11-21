@@ -9,7 +9,7 @@ dotenv.config();
 
 function CreateToken(data) {
     const access = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET
-        , { expiresIn: '30m' })
+        , { expiresIn: '60m' })
     return access
 }
 module.exports = {CreateToken}

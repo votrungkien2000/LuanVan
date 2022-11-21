@@ -11,12 +11,15 @@ import Select from '@mui/material/Select';
 import ProvinceService from 'services/province.service';
 import DistrictService from 'services/district.service';
 import HotelService from 'services/hotel.service';
+import HistorySearchService from 'services/HistorySrearch.service';
 
 const provinceService = new ProvinceService();
 const districtService = new DistrictService();
 const hotelService = new HotelService();
+const historySearchService = new HistorySearchService()
 
 function HomePage() {
+    const date = new Date();
     const [province, setProvince] = useState([]);
     const [District, setDistrict] = useState([]);
     const [showMap, setShowMap] = useState(false)
@@ -54,7 +57,7 @@ function HomePage() {
     }
     const handleSortChange = (e) => {
         setSelectChoose(e.target.value)
-        if(e.target.value === 1){
+        if (e.target.value === 1) {
             getHotelAll()
         }
         if (e.target.value === 2) {
@@ -67,11 +70,11 @@ function HomePage() {
         }
         if (e.target.value === 4) {
             hotels.sort((a, b) =>
-            a.price - b.price
+                a.price - b.price
             )
         }
     }
-    const getHotelBySearchHistoryUI = async (id) =>{
+    const getHotelBySearchHistoryUI = async (id) => {
         const result = await hotelService.getHotelBySearchHistory(id)
         setHotels(result.data.data)
     }
@@ -115,6 +118,9 @@ function HomePage() {
     useEffect(() => {
         getHotelAll()
     }, [])
+    const addHistorySearch = async (idProvince, month, year) => {
+        await historySearchService.addHistorySearch(idProvince, month, year);
+    }
     const handleSearch = async () => {
         try {
             let nameProvince = '';
@@ -133,6 +139,9 @@ function HomePage() {
             if (result.status === 200) {
                 setHotels(result.data.data)
             }
+        if(selectedProvince !== null){
+            addHistorySearch(selectedProvince, date.getMonth()+1, date.getFullYear())
+        }
         } catch (error) {
             console.log("Server error")
         }

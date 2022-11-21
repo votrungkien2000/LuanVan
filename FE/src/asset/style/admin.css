@@ -1,7 +1,35 @@
-.admin{
+.admin {
     padding: 30px;
 }
-.p-button-icon-only{
-    height: 50px !important;
-    width: 50px !important;;
+.admin__card{
+    display: flex;
+    flex-direction: column;
+}
+.admin__title{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    font-family:cursive !important;
+    line-height: 900;
+}
+.admin__change {
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.p-button-success {
+    height: 40px;
+    margin-left: 10px !important;
+    background-color: #66bb6a !important;
+}
+
+@media only screen and (max-width: 376px) {
+    .p-button-success {
+        font-size: 0.78rem !important;
+    }
+    .MuiSelect-select{
+        font-size: 0.78rem !important;
+    }
 }
