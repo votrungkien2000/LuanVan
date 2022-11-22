@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Button } from 'primereact/button';
 import Select from '@mui/material/Select';
 import 'asset/style/admin.css';
+// import GoogleMapReact from 'google-map-react';
 import HistorySearchService from 'services/HistorySrearch.service';
 import ProvinceService from 'services/province.service';
 
@@ -12,6 +13,14 @@ const historySearchService = new HistorySearchService();
 const provinceService = new ProvinceService();
 
 function Admin() {
+    // const AnyReactComponent = ({ text }) => <div>{text}</div>;
+    // const defaultProps = {
+    //     center: {
+    //         lat: 10.99835602,
+    //         lng: 77.01502627
+    //     },
+    //     zoom: 11
+    // };
     const date = new Date()
     const [statistical, setStatistical] = useState()
     const [chartData, setChartData] = useState({
@@ -19,7 +28,7 @@ function Admin() {
         datasets: [
             {
                 type: 'bar',
-                label: 'Dataset 1',
+                label: 'Tỉnh/Thành phố',
                 backgroundColor: '#66BB6A',
                 data: statistical,
                 borderColor: 'white',
@@ -121,7 +130,19 @@ function Admin() {
                     <Button label="Sao lưu" className="p-button-success" />
                 </div>
             </div>
-
+            {/* <div style={{ height: '100vh', width: '100%' }}>
+                <GoogleMapReact
+                    bootstrapURLKeys={{ key: "" }}
+                    defaultCenter={defaultProps.center}
+                    defaultZoom={defaultProps.zoom}
+                >
+                    <AnyReactComponent
+                        lat={59.955413}
+                        lng={30.337844}
+                        text="My Marker"
+                    />
+                </GoogleMapReact>
+            </div> */}
         </div>
     )
 }
