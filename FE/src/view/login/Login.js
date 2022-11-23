@@ -51,21 +51,19 @@ function Login() {
         try {
             if (validate()) {
                 const result = await userService.login(account, password)
-                localStorage.setItem('accessToken', result.data.data.createToken)
+                // localStorage.setItem('accessToken', result.data.data.createToken)
                 localStorage.setItem('id', result.data.data.result._id)
                 console.log(result.data)
                 if(result.data.statusCode === 200){
                     navigate('/');
                     console.log("thanh cong")
                 }else{
-                    console.log("login faile")
+                    alert("Sai tài khoản hoặc mật khẩu")
                 }               
-            }
-            else {
-                console.log("that bai")
             }
         } catch (error) {
             console.log(error)
+            alert("Sai tài khoản hoặc mật khẩu")
         }
     }
     return (

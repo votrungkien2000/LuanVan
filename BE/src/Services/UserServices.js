@@ -1,6 +1,5 @@
 const ErrorHander = require("../Utils/Notification/ErrorHander");
 const SuccessHander = require("../Utils/Notification/SuccessHander");
-const getRoomDetail = require('../Utils/scraping')
 const {CreateToken} = require('../Utils/token/token.js')
 const User = require("../Models/User");
 
@@ -17,8 +16,9 @@ exports.add = async (user) => {
             password: user.password,
             birthDate: birthdate,
             numberPhone: user.numberPhone,
-            province: user.province,
-            district: user.district
+            role: 1
+            // province: user.province,
+            // district: user.district
         });
         await result.save();
         return SuccessHander(200, "Create category success", result);
@@ -58,15 +58,15 @@ exports.add = async (user) => {
                 return ErrorHander(400, err.errors.numberPhone.properties.message);
         }
         // Validation province
-        if (err.errors.province) {
-            if (err.errors.province.properties.type == "required")
-                return ErrorHander(400, err.errors.province.properties.message);
-        }
-        // Validation district
-        if (err.errors.district) {
-            if (err.errors.district.properties.type == "required")
-                return ErrorHander(400, err.errors.district.properties.message);
-        }
+        // if (err.errors.province) {
+        //     if (err.errors.province.properties.type == "required")
+        //         return ErrorHander(400, err.errors.province.properties.message);
+        // }
+        // // Validation district
+        // if (err.errors.district) {
+        //     if (err.errors.district.properties.type == "required")
+        //         return ErrorHander(400, err.errors.district.properties.message);
+        // }
     }
 
 }
@@ -74,8 +74,8 @@ exports.add = async (user) => {
 exports.getUser = async (id) => {
     try {
         const result = await User.find({ _id: id })
-        .populate({ path: 'province', model: 'Province' })
-        .populate({ path: 'district', model: 'District' })
+        // .populate({ path: 'province', model: 'Province' })
+        // .populate({ path: 'district', model: 'District' })
         return SuccessHander(200, "Create category success", result);
 
     } catch (err) {

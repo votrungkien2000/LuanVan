@@ -6,17 +6,27 @@ import Logo from '../../asset/image/Focal Real.png'
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const [account, setAccount] = useState('');
-    const [password, setPassword] = useState('');
+    const [user, setUser] = useState({
+        userName: '',
+        account: '',
+        password: '',
+        birthDate: '',
+        numberPhone: '',
+    })
+    // const [userName, setUserName] = useState('');
+    // const [account, setAccount] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [numberPhone, setNumberPhone] = useState('')
     const [confimPassword, setconfimPassword] = useState('');
-    const [numberPhone, setNumberPhone] = useState('')
     const [error, setError] = useState({
+        userName: false,
         account: false,
         numberPhone: false,
         password: false,
         confimPassword: false
     })
     const [notify, setNotify] = useState({
+        userName: "",
         account: "We'll never share your email with anyone else",
         password: "",
         confimPassword: "",
@@ -24,7 +34,18 @@ function Login() {
     })
     const validate = () => {
         let check = true;
-        if (account === '') {
+        if (user.userName === '') {
+            setError(prev => ({
+                ...prev,
+                userName: true
+            }))
+            setNotify(prev => ({
+                ...prev,
+                userName: "Please enter a user name"
+            }))
+            check = false
+        }
+        if (user.account === '') {
             setError(prev => ({
                 ...prev,
                 account: true
@@ -35,7 +56,7 @@ function Login() {
             }))
             check = false
         }
-        if (numberPhone === '') {
+        if (user.numberPhone === '') {
             setError(prev => ({
                 ...prev,
                 numberPhone: true
@@ -46,7 +67,7 @@ function Login() {
             }))
             check = false
         }
-        if (password === '') {
+        if (user.password === '') {
             setError(prev => ({
                 ...prev,
                 password: true
@@ -56,7 +77,7 @@ function Login() {
                 password: "Please enter a password"
             }))
             check = false
-        } 
+        }
         if (confimPassword === '') {
             setError(prev => ({
                 ...prev,
@@ -88,10 +109,38 @@ function Login() {
                 </div>
                 <div>
                     <div className="mb-3">
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            value={account}
+                        <input type="text" className="form-control" id="exampleInputEmail1"
+                            value={user.userName}
                             autoComplete='off'
-                            onChange={e => setAccount(e.target.value)}
+                            onChange={e => setUser(
+                                prev => ({
+                                    ...prev,
+                                    userName: e.target.value
+                                }))}
+                            placeholder="User Name"
+                            onFocus={() => {
+                                setError(prev => ({
+                                    ...prev,
+                                    userName: false
+                                }))
+                                setNotify(prev => ({
+                                    ...prev,
+                                    userName: ""
+                                }))
+                            }}
+                        // inputprops={offAutoComplete}
+                        />
+                        <div id="emailHelp" style={{ color: error.account ? "#f03f20" : "" }} className="form-text notify">{notify.userName}</div>
+                    </div>
+                    <div className="mb-3">
+                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            value={user.account}
+                            autoComplete='off'
+                            onChange={e => setUser(
+                                prev => ({
+                                    ...prev,
+                                    account: e.target.value
+                                }))}
                             placeholder="Email Address"
                             onFocus={() => {
                                 setError(prev => ({
@@ -109,8 +158,12 @@ function Login() {
                     </div>
                     <div className="mb-3">
                         <input type="number" className="form-control" id="exampleInputPassword1"
-                            value={numberPhone}
-                            onChange={e => setNumberPhone(e.target.value)}
+                            value={user.numberPhone}
+                            onChange={e => setUser(
+                                prev => ({
+                                    ...prev,
+                                    numberPhone: e.target.value
+                                }))}
                             placeholder="Number phone"
                             onFocus={() => {
                                 setError(prev => ({
@@ -127,42 +180,46 @@ function Login() {
                         <div id="emailHelp" style={{ color: error.numberPhone ? "#f03f20" : "" }} className="form-text notify">{notify.numberPhone}</div>
                     </div>
                     <div className="mb-3">
-                    <Password 
-                        style={{width:"100%"}}
-                        value={password} 
-                        onChange={e => setPassword(e.target.value)}
-                        placeholder="Password"
-                        onFocus={() => {
-                            setError(prev => ({
-                                ...prev,
-                                password: false
-                            }))
-                            setNotify(prev => ({
-                                ...prev,
-                                password: ""
-                            }))
-                        }}
-                        toggleMask />
+                        <Password
+                            style={{ width: "100%" }}
+                            value={user.password}
+                            onChange={e => setUser(
+                                prev => ({
+                                    ...prev,
+                                    password: e.target.value
+                                }))}
+                            placeholder="Password"
+                            onFocus={() => {
+                                setError(prev => ({
+                                    ...prev,
+                                    password: false
+                                }))
+                                setNotify(prev => ({
+                                    ...prev,
+                                    password: ""
+                                }))
+                            }}
+                            toggleMask />
                         <div id="emailHelp" style={{ color: error.password ? "#f03f20" : "" }} className="form-text notify">{notify.password}</div>
                     </div>
                     <div className="mb-3">
-                    <Password 
-                        style={{width:"100%"}}
-                        value={confimPassword} 
-                        onChange={e => setconfimPassword(e.target.value)}
-                        placeholder="Confrim Password"
-                        onFocus={() => {
-                            setError(prev => ({
-                                ...prev,
-                                confimPassword: false
-                            }))
-                            setNotify(prev => ({
-                                ...prev,
-                                confimPassword: ""
-                            }))
-                        }}
-                        toggleMask 
-                        feedback = {false}/>
+                        <Password
+                            style={{ width: "100%" }}
+                            value={confimPassword}
+                            onChange={e => setconfimPassword(e.target.value)}
+                            placeholder="Confrim Password"
+                            onFocus={() => {
+                                setError(prev => ({
+                                    ...prev,
+                                    confimPassword: false
+                                }))
+                                setNotify(prev => ({
+                                    ...prev,
+                                    confimPassword: ""
+                                }))
+                            }}
+                            toggleMask
+                            feedback={false} />
                         <div id="emailHelp" style={{ color: error.confimPassword ? "#f03f20" : "" }} className="form-text notify">{notify.confimPassword}</div>
                     </div>
                     <div className="login__submit form-register">
