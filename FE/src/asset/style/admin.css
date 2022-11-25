@@ -1,5 +1,5 @@
 .admin {
-    padding: 30px;
+    /* padding: 30px; */
 }
 .admin__card{
     display: flex;
@@ -24,7 +24,16 @@
     margin-left: 10px !important;
     background-color: #66bb6a !important;
 }
-
+.admin__loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position:fixed;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
 @media only screen and (max-width: 376px) {
     .p-button-success {
         font-size: 0.78rem !important;

@@ -35,12 +35,15 @@ const User = new Schema(
     province: {
       type: Schema.Types.ObjectId,
       ref: 'Province',
-      required: [true, "Please chose your province"],
+      // required: [true, "Please chose your province"],
     },
     district: {
       type: Schema.Types.ObjectId,
       ref: 'District',
-      required: [true, "Please enter your district"],
+      // required: [true, "Please enter your district"],
+    },
+    role: {
+      type: Number,
     }
   },
 );

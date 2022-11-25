@@ -1,28 +1,33 @@
 const ErrorHander = require("../Utils/Notification/ErrorHander");
 const SuccessHander = require("../Utils/Notification/SuccessHander");
 const getRoomDetail = require('../Utils/scraping')
-const {CreateToken} = require('../Utils/token/token.js')
+const { CreateToken } = require('../Utils/token/token.js')
 const User = require("../Models/User");
 
 exports.add = async (user) => {
+    console.log(user)
     if (user.birthDate === '') {
         user.birthDate = Date()
     }
     const date = new Date(user.birthDate)
-    const birthdate = date.setDate(date.getDate() + 1)
+    const birthdate = date.setDate(date.getDate())
     try {
-        const result = new User({
+        const newUser = {
             userName: user.userName,
-            email: user.email,
+            email: user.account,
             password: user.password,
             birthDate: birthdate,
             numberPhone: user.numberPhone,
-            province: user.province,
-            district: user.district
-        });
+            province: user.province ?? null,
+            district: user.district ?? null,
+            role: 1
+        }
+        console.log(newUser)
+        const result = new User(newUser);
         await result.save();
         return SuccessHander(200, "Create category success", result);
     } catch (err) {
+        console.log(err)
         if (err.code == 11000)
             return ErrorHander(400, "Email already exists, please enter email");
         if (err.errors.email) {
@@ -58,15 +63,15 @@ exports.add = async (user) => {
                 return ErrorHander(400, err.errors.numberPhone.properties.message);
         }
         // Validation province
-        if (err.errors.province) {
-            if (err.errors.province.properties.type == "required")
-                return ErrorHander(400, err.errors.province.properties.message);
-        }
-        // Validation district
-        if (err.errors.district) {
-            if (err.errors.district.properties.type == "required")
-                return ErrorHander(400, err.errors.district.properties.message);
-        }
+        // if (err.errors.province) {
+        //     if (err.errors.province.properties.type == "required")
+        //         return ErrorHander(400, err.errors.province.properties.message);
+        // }
+        // // Validation district
+        // if (err.errors.district) {
+        //     if (err.errors.district.properties.type == "required")
+        //         return ErrorHander(400, err.errors.district.properties.message);
+        // }
     }
 
 }
@@ -74,8 +79,8 @@ exports.add = async (user) => {
 exports.getUser = async (id) => {
     try {
         const result = await User.find({ _id: id })
-        .populate({ path: 'province', model: 'Province' })
-        .populate({ path: 'district', model: 'District' })
+            .populate({ path: 'province', model: 'Province' })
+            .populate({ path: 'district', model: 'District' })
         return SuccessHander(200, "Create category success", result);
 
     } catch (err) {
@@ -91,14 +96,25 @@ exports.login = async (user) => {
             return ErrorHander(400, "Please enter password");
         }
         const result = await User.findOne({ email: user.email })
+        console.log(result)
         if (result === null) {
             return ErrorHander(400, "wrong email");
         }
         if (user.password !== result.password) {
             return ErrorHander(400, "wrong password");
         }
-        const createToken = CreateToken({id: result._id})
+        const createToken = CreateToken({ id: result._id })
         return SuccessHander(200, "Create category success", { result, createToken });
+    } catch (err) {
+        console.log(err)
+        return ErrorHander(500, "Get all faild");
+    }
+}
+exports.updateUser = async (user, id) => {
+    try {
+        console.log(user)
+        await User.updateOne({ _id: id }, user)
+        return SuccessHander(200, "Create category success");
     } catch (err) {
         console.log(err)
         return ErrorHander(500, "Get all faild");

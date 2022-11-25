@@ -1,7 +1,10 @@
 const { default: BaseService } = require("./base.service")
 
 class Hotel extends BaseService {
-
+    addHotels = async () => {
+        const result = await this.api.get('/api/addHotel');
+        return result;
+    }
     getHotelAll = async () => {
         const result = await this.api.get('/api/getHotelAll');
         return result;

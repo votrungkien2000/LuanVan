@@ -3,20 +3,22 @@ const SuccessHander = require("../Utils/Notification/SuccessHander");
 const scraping = require('../Utils/scraping')
 const Hotel = require('../Models/Hotel')
 const History = require('../Models/History')
+const MongoClient = require('mongoose');
 
-const NodeGeocoder = require('node-geocoder');
+// const NodeGeocoder = require('node-geocoder');
 
-const options = {
-    provider: 'google',
+// const options = {
+//     provider: 'google',
 
-    // Optional depending on the providers
-    apiKey: process.env.API_KEY, // for Mapquest, OpenCage, Google Premier
-    formatter: null // 'gpx', 'string', ...
-};
-const geocoder = NodeGeocoder(options);
+//     // Optional depending on the providers
+//     apiKey: process.env.API_KEY, // for Mapquest, OpenCage, Google Premier
+//     formatter: null // 'gpx', 'string', ...
+// };
+// const geocoder = NodeGeocoder(options);
 
 exports.addHotelService = async () => {
     try {
+        MongoClient.connection.db.dropCollection('hotels')
         const data = await scraping();
         data.forEach(async (item, index) => {
             if (index !== 0) {

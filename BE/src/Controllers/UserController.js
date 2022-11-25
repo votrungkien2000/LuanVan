@@ -1,5 +1,5 @@
 const { use } = require("../Routers/UserRouters");
-const { add, scraping, getUser, login } = require("../Services/UserServices");
+const { add, getUser, login, updateUser } = require("../Services/UserServices");
 
 
 
@@ -7,7 +7,6 @@ module.exports = {
   addUser: async (req, res) => {
     try {
       const user = req.body;
-      
       const result = await add(user);
       return res.status(200).json(result);
     } catch (err) {
@@ -40,7 +39,20 @@ module.exports = {
         err,
       });
     }
-  }
+  },
+  updateUser: async (req, res) => {
+    try {
+      const user = req.body.user;
+      const id = req.body.id
+      const result = await updateUser(user, id);
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  },
   // scraping: async (req, res) => {
   //   try {
       

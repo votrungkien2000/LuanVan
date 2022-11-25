@@ -16,22 +16,7 @@ const provinceService = new ProvinceService();
 const districtService = new DistrictService();
 
 function Profile() {
-    const [userName, setUserName] = useState('');
-    const getAPI = async () => {
-        const id = localStorage.getItem('id')
-        try {
-            const result = await userService.getUserById(id)
-            console.log(result)
-            setUserName(result.data.data[0].userName)
-            setDate(result.data.data[0].birthDate)
-            setNumberPhone(result.data.data[0].numberPhone)
-            setSelectProvince(result.data.data[0].province._id)
-            setSelectDistrict(result.data.data[0].district._id)
-            setEmail(result.data.data[0].email)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
     const onChangeDate = (e) => {
         setDate(e.target.value)
     }
@@ -41,6 +26,7 @@ function Profile() {
             date = new Date(dateString);
         return moment(date).format('YYYY-MM-DD');
     }
+    const [userName, setUserName] = useState('');
     const [date, setDate] = useState(null);
     const [img, setImg] = useState(null)
     const [numberPhone, setNumberPhone] = useState('');
@@ -49,6 +35,7 @@ function Profile() {
     const [districts, setDistricts] = useState([]);
     const [selectDistrict, setSelectDistrict] = useState('');
     const [email, setEmail] = useState('');
+    
     const changeImg = (e) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
@@ -84,8 +71,41 @@ function Profile() {
     const onChangeDistrict = (e) => {
         setSelectDistrict(e.target.value);
     }
+    const updateUser = async () => {
+        const id = localStorage.getItem("id")
+        console.log(id) 
+        try {
+            const user = {
+                userName: userName,
+                email: email,
+                birthDate: date,
+                numberPhone: numberPhone,
+                province: selectProvince,
+                district: selectDistrict,
+            }
+            console.log(user)
+            console.log(email)
+            const result = await userService.updateUser(user, id)
+            console.log(result)
+        } catch (error) {
 
-
+        }
+    }
+    const getAPI = async () => {
+        const id = localStorage.getItem('id')
+        try {
+            const result = await userService.getUserById(id)
+            console.log(result)
+            setUserName(result.data.data[0].userName)
+            setDate(result.data.data[0].birthDate)
+            setNumberPhone(result.data.data[0].numberPhone)
+            setEmail(result.data.data[0].email)
+            setSelectProvince(result.data.data[0].province ? result.data.data[0].province._id : '')
+            setSelectDistrict(result.data.data[0].district ? result.data.data[0].district._id : '')
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
         getAPI()
         getProvince()
@@ -124,10 +144,10 @@ function Profile() {
                         <div className='profile__info__content__right__body'>
                             <div className='profile__info__content__left'>
                                 <div className="field col-12 md:col-4">
-                                    <TextField className='textField' id="outlined-basic" value={email} onChange={(e) => setEmail(e.value)} label="email" variant="outlined" />
+                                    <TextField className='textField' id="outlined-basic" value={email} onChange={(e) => setEmail(e.target.value)} label="email" variant="outlined" />
                                 </div>
                                 <div className="field col-12 md:col-4">
-                                    <TextField className='textField' id="outlined-basic" value={userName} onChange={(e) => setUserName(e.value)} label="full name" variant="outlined" />
+                                    <TextField className='textField' id="outlined-basic" value={userName} onChange={(e) => setUserName(e.target.value)} label="full name" variant="outlined" />
                                 </div>
                                 <div className="field col-12 md:col-4">
                                     <TextField className='textField' type="date"
@@ -138,7 +158,7 @@ function Profile() {
                             </div>
                             <div className='profile__info__content__right'>
                                 <div className="field col-12 md:col-4">
-                                    <TextField className='textField' id="outlined-basic" value={numberPhone} onChange={(e) => setNumberPhone(e.value)} label="number phone" variant="outlined" />
+                                    <TextField className='textField' id="outlined-basic" value={numberPhone} onChange={(e) => setNumberPhone(e.target.value)} label="number phone" variant="outlined" />
                                 </div>
                                 <div className="field col-12 md:col-4">
                                     <Select className='select__adress'
@@ -169,7 +189,7 @@ function Profile() {
                         </div>
                         <div className='profile__info__content__btn'>
                             <Button style={{ color: "var(--bs-btn-bg)" }} label="Reset" className="p-button-info" />
-                            <Button label="Submit" className='p-button-info1' />
+                            <Button label="Submit" className='p-button-info1' onClick={updateUser} />
                         </div>
                     </div>
                 </div>
