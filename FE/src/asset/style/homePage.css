@@ -101,7 +101,10 @@
 .homePage__body__change{
     display: none;
 }
-
+.notification{
+    font-size: 1.5rem;
+    color: rgb(178, 0, 0);
+}
 /* width < 470px */
 @media only screen and (max-width: 1024px) {
     .p-dropdown {

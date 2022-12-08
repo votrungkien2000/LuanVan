@@ -113,6 +113,7 @@ function Profile() {
     useEffect(() => {
         getDistrict(selectProvince)
     }, [selectProvince])
+    console.log(selectProvince)
     return (
         <div className="profile">
             <div className='p-fluid grid formgrid profile__info'>

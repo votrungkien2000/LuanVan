@@ -13,8 +13,8 @@ class Hotel extends BaseService {
         const result = await this.api.post('/api/getHotelBySearch', { province, district, price });
         return result;
     }
-    getHotelBySearchHistory = async (idUser) => {
-        const result = await this.api.post('/api/getHotelBySearchHistory', {idUser})
+    getHotelBySearchHistory = async (idUser, nameProvince, nameDistrict) => {
+        const result = await this.api.post('/api/getHotelBySearchHistory', {idUser, nameProvince, nameDistrict})
         return result
     }
 }

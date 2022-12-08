@@ -45,7 +45,9 @@ module.exports = {
   getHotelBySearchHistory: async (req, res) => {
     try {
       let idUser = req.body.idUser
-      const result = await getHotelBySearchHistoryService(idUser);
+      let nameProvince = req.body.nameProvince
+      let nameDistrict = req.body.nameDistrict
+      const result = await getHotelBySearchHistoryService(idUser, nameProvince, nameDistrict);
       return res.status(200).json(result);
     } catch (err) {
       console.log(err)

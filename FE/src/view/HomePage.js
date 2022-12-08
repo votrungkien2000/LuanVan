@@ -27,6 +27,7 @@ function HomePage() {
     const [price, setPrice] = useState([500000, 5000000]);
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectChoose, setSelectChoose] = useState('1')
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [hotels, setHotels] = useState([]);
     const [chooses, setChooses] = useState([
         {
@@ -61,7 +62,22 @@ function HomePage() {
             getHotelAll()
         }
         if (e.target.value === 2) {
-            getHotelBySearchHistoryUI(localStorage.getItem("id"))
+            let nameProvince = '';
+            let nameDistrict = '';
+            for(var item of province){
+                if(selectedProvince === item._id){
+                    nameProvince = item.nameProvince
+                }
+            }
+            for(var item of District){
+                if(selectedDistrict === item._id){
+                    nameDistrict = item.nameDistrict
+                }
+            }
+            console.log(nameProvince)
+            getHotelBySearchHistoryUI(localStorage.getItem("id"), nameProvince, nameDistrict)
+            // setSelectedProvince(null)
+            // setSelectedDistrict(null)
         }
         if (e.target.value === 3) {
             hotels.sort((a, b) =>
@@ -74,8 +90,8 @@ function HomePage() {
             )
         }
     }
-    const getHotelBySearchHistoryUI = async (id) => {
-        const result = await hotelService.getHotelBySearchHistory(id)
+    const getHotelBySearchHistoryUI = async (id, nameProvince, nameDistrict) => {
+        const result = await hotelService.getHotelBySearchHistory(id, nameProvince, nameDistrict)
         setHotels(result.data.data)
     }
     const getDistrict = async (idProvince) => {
@@ -93,7 +109,6 @@ function HomePage() {
     const onChangeMap = () => {
         setShowMap(!showMap)
     }
-    const [selectedDistrict, setSelectedDistrict] = useState(null);
 
     const onChangeDistrict = (e) => {
         setSelectedDistrict(e.value);
@@ -187,11 +202,10 @@ function HomePage() {
                     <p>Show Map</p>
                 </div>
                 <div className='homePage__body__hotel'
-                    style={showMap ? { display: "none" } : {}}
-                >
+                    style={showMap ? { display: "none" } : {}}>
                     <div className='homePage__body__sort'>
                         <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
-                            <InputLabel id="demo-select-small">Sort</InputLabel>
+                            <InputLabel id="demo-select-small">Gợi ý</InputLabel>
                             <Select
                                 labelId="demo-select-small"
                                 id="demo-select-small"
@@ -207,7 +221,7 @@ function HomePage() {
                     </div>
                     {hotels.length !== 0 ? hotels.map((ele, index) => {
                         return <Card key={index} hotel={ele} />
-                    }) : <div></div>}
+                    }) : <div><p className='notification'>Dữ liệu không tồn tại</p></div>}
                 </div>
                 <div className={`homePage__body_map ${showMap ? 'homePage__body_map_show' : ''}`}>
                     <div className='homePage__body__map__item'>

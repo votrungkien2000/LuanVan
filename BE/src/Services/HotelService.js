@@ -24,20 +24,20 @@ exports.addHotelService = async () => {
             if (index !== 0) {
                 var res = await geocoder.geocode(item.address);
                 if (typeof res[0] != "undefined") {
-                item.price = Number(item.price.split('.').reduce((total, num) => { return total + num }))
-                let hotel = new Hotel({
-                    hotelName: item.hotelName,
-                    address: item.address,
-                    hotelInfo: item.hotelInfo,
-                    price: item.price,
-                    latitude: res[0].latitude,
-                    longitude: res[0].longitude,
-                    point: item.point,
-                    picture: item.picture,
-                    star: item.star.includes("_")? item.star.split("_")[1] : item.star,
-                    countSearch: 0
-                });
-                await hotel.save();
+                    item.price = Number(item.price.split('.').reduce((total, num) => { return total + num }))
+                    let hotel = new Hotel({
+                        hotelName: item.hotelName,
+                        address: item.address,
+                        hotelInfo: item.hotelInfo,
+                        price: item.price,
+                        latitude: res[0].latitude,
+                        longitude: res[0].longitude,
+                        point: item.point,
+                        picture: item.picture,
+                        star: item.star.includes("_") ? item.star.split("_")[1] : item.star,
+                        countSearch: 0
+                    });
+                    await hotel.save();
                 }
             }
         });
@@ -99,8 +99,9 @@ exports.getHotelBySearchService = async (province, district, price) => {
         return ErrorHander(500, "Get all faild");
     }
 }
-exports.getHotelBySearchHistoryService = async (idUser) => {
+exports.getHotelBySearchHistoryService = async (idUser, nameProvince, nameDistrict) => {
     try {
+        console.log(idUser, nameProvince, nameDistrict)
         let hotelByHistory = []
         const history = await History.find({ idUser: idUser }).sort({ createdAt: -1 })
         let min = history[0].price - 500000;
@@ -110,7 +111,6 @@ exports.getHotelBySearchHistoryService = async (idUser) => {
             if (item.star === history[0].star) {
                 hotelByHistory.push(item)
             }
-
             if (history[0].price !== 0) {
                 let arr = []
                 for (item of hotelByHistory) {
@@ -120,9 +120,22 @@ exports.getHotelBySearchHistoryService = async (idUser) => {
                         }
                     }
                 }
-                hotelByHistory = arr
+                hotelByHistory = arr;
             }
         })
+        if (nameProvince !== '' && nameProvince !== undefined) {
+            const arr = hotelByHistory.filter(item => {
+                return item.address.includes(nameProvince)
+            })
+            console.log(arr)
+            hotelByHistory = arr
+        }
+        if (nameDistrict !== '' && nameDistrict !== undefined) {
+            const arr = hotelByHistory.filter(item => {
+                return item.address.includes(nameDistrict)
+            })
+            hotelByHistory = arr
+        }
         return SuccessHander(200, "Create category success", hotelByHistory);
     } catch (error) {
 

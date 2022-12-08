@@ -57,7 +57,7 @@ function getlink() {
 const getPage = async () => {
     const linkProvincePages = getlink()
     // for(i =0 ; i<linkProvincePages.length ; i++){
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 15; i++) {
         listLinkProvincePage[i] = new Array();
         listLinkProvincePage[i].push(linkProvincePages[i]);
         const response = await axios.get(linkProvincePages[i])
