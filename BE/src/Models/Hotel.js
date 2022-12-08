@@ -29,6 +29,9 @@ const Hotel = new Schema(
     },
     star: {
         type: Number
+    },
+    countSearch: {
+        type: Number
     }
   },
   { timestamps: true }

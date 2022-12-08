@@ -50,13 +50,14 @@ function getlink() {
         const link = `https://www.bestprice.vn/khach-san/${row}`;
         return link;
     }) 
+    console.log(arr) 
     return arr;
 }
 
 const getPage = async () => {
     const linkProvincePages = getlink()
     // for(i =0 ; i<linkProvincePages.length ; i++){
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < 5; i++) {
         listLinkProvincePage[i] = new Array();
         listLinkProvincePage[i].push(linkProvincePages[i]);
         const response = await axios.get(linkProvincePages[i])

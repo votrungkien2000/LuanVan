@@ -5,16 +5,16 @@ const Hotel = require('../Models/Hotel')
 const History = require('../Models/History')
 const MongoClient = require('mongoose');
 
-// const NodeGeocoder = require('node-geocoder');
+const NodeGeocoder = require('node-geocoder');
 
-// const options = {
-//     provider: 'google',
+const options = {
+    provider: 'google',
 
-//     // Optional depending on the providers
-//     apiKey: process.env.API_KEY, // for Mapquest, OpenCage, Google Premier
-//     formatter: null // 'gpx', 'string', ...
-// };
-// const geocoder = NodeGeocoder(options);
+    // Optional depending on the providers
+    apiKey: process.env.API_KEY, // for Mapquest, OpenCage, Google Premier
+    formatter: null // 'gpx', 'string', ...
+};
+const geocoder = NodeGeocoder(options);
 
 exports.addHotelService = async () => {
     try {
@@ -22,26 +22,28 @@ exports.addHotelService = async () => {
         const data = await scraping();
         data.forEach(async (item, index) => {
             if (index !== 0) {
-                // var res = await geocoder.geocode(item.address);
-                // if (typeof res[0] != "undefined") {
+                var res = await geocoder.geocode(item.address);
+                if (typeof res[0] != "undefined") {
                 item.price = Number(item.price.split('.').reduce((total, num) => { return total + num }))
                 let hotel = new Hotel({
                     hotelName: item.hotelName,
                     address: item.address,
                     hotelInfo: item.hotelInfo,
                     price: item.price,
-                    // latitude: res[0].latitude,
-                    // longitude: res[0].longitude,
+                    latitude: res[0].latitude,
+                    longitude: res[0].longitude,
                     point: item.point,
                     picture: item.picture,
-                    star: item.star
+                    star: item.star.includes("_")? item.star.split("_")[1] : item.star,
+                    countSearch: 0
                 });
                 await hotel.save();
-                // }
+                }
             }
         });
         return SuccessHander(200, "Create category success");
     } catch (error) {
+        console.log(error)
         return SuccessHander(200, "Create category success", data);
     }
 }
