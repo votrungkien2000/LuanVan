@@ -1,5 +1,5 @@
 const { use } = require("../Routers/UserRouters");
-const { add, getUser, login, updateUser } = require("../Services/UserServices");
+const { add, getUser, login, updateUser, saveData } = require("../Services/UserServices");
 
 
 
@@ -53,18 +53,16 @@ module.exports = {
       });
     }
   },
-  // scraping: async (req, res) => {
-  //   try {
-      
-  //     const result = await scraping();
-  //     return res.status(200).json(result);
-  //   } catch (err) {
-  //     console.log(err)
-  //     return res.status(500).json({
-  //       message: "Internal Server Error",
-  //       err,
-  //     });
-  //   }
-  // },
+  saveData: async (req, res) => {
+    try {
+      const result = await saveData();
+      return res.status(200).json(result);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  },
 };
 

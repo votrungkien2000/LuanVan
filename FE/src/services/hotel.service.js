@@ -17,6 +17,14 @@ class Hotel extends BaseService {
         const result = await this.api.post('/api/getHotelBySearchHistory', {idUser, nameProvince, nameDistrict})
         return result
     }
+    getHotelByPopular = async (nameProvince, nameDistrict) => {
+        const result = await this.api.post('/api/getHotelByPopular', {nameProvince, nameDistrict})
+        return result
+    }
+    getHotelByPosition = async (latitude, longitude) => {
+        const result = await this.api.post('/api/getHotelByPosition', {latitude, longitude})
+        return result
+    }
 }
 
 export default Hotel;

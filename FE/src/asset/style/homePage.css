@@ -105,6 +105,11 @@
     font-size: 1.5rem;
     color: rgb(178, 0, 0);
 }
+.homePage__body__pagination{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 /* width < 470px */
 @media only screen and (max-width: 1024px) {
     .p-dropdown {

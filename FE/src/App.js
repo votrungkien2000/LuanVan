@@ -6,6 +6,7 @@ import Profile from 'view/profile/Profile.js'
 import Admin from 'view/admin/Admin';
 import LayoutDefault from './component/layout/Layout';
 import PrivateRoute from 'component/private/PrivateRouter';
+import FireWall from 'component/private/FireWall';
 import './App.scss';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -16,12 +17,11 @@ function App() {
   return (
     <div className="App">
       <Routes>
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+
         <Route path='/' element={<PrivateRoute><LayoutDefault /></PrivateRoute>}>
-        <Route path='/admin' element={<PrivateRoute><Admin/></PrivateRoute>} />
-          <Route path='/' element={<PrivateRoute><HomePage /></PrivateRoute>} />
+          <Route path='/' element={<PrivateRoute><FireWall></FireWall></PrivateRoute>} />
           <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>} />
         </Route>
       </Routes>

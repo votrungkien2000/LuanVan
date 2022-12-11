@@ -1,4 +1,4 @@
-const {addHotelService, getHotelAllService, getHotelBySearchService, getHotelBySearchHistoryService} = require("../Services/HotelService.js");
+const {addHotelService, getHotelAllService, getHotelBySearchService, getHotelBySearchHistoryService, getHotelByPopularService, getHotelByPositionService} = require("../Services/HotelService.js");
 
 
 module.exports = {
@@ -48,6 +48,34 @@ module.exports = {
       let nameProvince = req.body.nameProvince
       let nameDistrict = req.body.nameDistrict
       const result = await getHotelBySearchHistoryService(idUser, nameProvince, nameDistrict);
+      return res.status(200).json(result);
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  },
+  getHotelByPopular: async (req, res) => {
+    try {
+      let nameProvince = req.body.nameProvince
+      let nameDistrict = req.body.nameDistrict
+      const result = await getHotelByPopularService(nameProvince, nameDistrict);
+      return res.status(200).json(result);
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  },
+  getHotelByPosition: async (req, res) => {
+    try {
+      let latitude = req.body.latitude 
+      let longitude = req.body.longitude
+      const result = await getHotelByPositionService(latitude, longitude);
       return res.status(200).json(result);
     } catch (err) {
       console.log(err)

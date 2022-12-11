@@ -53,13 +53,16 @@ function Login() {
                 const result = await userService.login(account, password)
                 localStorage.setItem('accessToken', result.data.data.createToken)
                 localStorage.setItem('id', result.data.data.result._id)
-                console.log(result.data)
-                if(result.data.statusCode === 200){
+                localStorage.setItem('role', result.data.data.result.role)
+                if (result.data.statusCode === 200 && result.data.data.result.role === 1) {
                     navigate('/');
                     console.log("thanh cong")
-                }else{
+                }
+                else if (result.data.statusCode === 200 && result.data.data.result.role === 0) {
+                    navigate('/admin');
+                } else {
                     console.log("login faile")
-                }               
+                }
             }
             else {
                 console.log("that bai")

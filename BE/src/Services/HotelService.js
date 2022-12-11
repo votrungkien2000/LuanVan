@@ -49,24 +49,24 @@ exports.addHotelService = async () => {
 }
 exports.getHotelAllService = async (PAGE) => {
     try {
-        let PAGE_SIZE = 10;
-        let start = (PAGE - 1) * PAGE_SIZE;
-        let end = start + PAGE_SIZE;
-        if (PAGE) {
-            if (PAGE < 1) {
-                PAGE = 1;
-            }
-            PAGE = parseInt(PAGE)
-            var numberOfSkips = (PAGE - 1) * PAGE_SIZE;
-            const result = await Hotel.find({})
-                .skip(numberOfSkips)
-                .limit(PAGE_SIZE)
-            return SuccessHander(200, "Create category success", result);
+        // let PAGE_SIZE = 10;
+        // let start = (PAGE - 1) * PAGE_SIZE;
+        // let end = start + PAGE_SIZE;
+        // if (PAGE) {
+        //     if (PAGE < 1) {
+        //         PAGE = 1;
+        //     }
+        //     PAGE = parseInt(PAGE)
+        //     var numberOfSkips = (PAGE - 1) * PAGE_SIZE;
+        //     const result = await Hotel.find({})
+        //         .skip(numberOfSkips)
+        //         .limit(PAGE_SIZE)
+        //     return SuccessHander(200, "Create category success", result);
 
-        } else {
+        // } else {
             const result = await Hotel.find({})
             return SuccessHander(200, "Create category success", result);
-        }
+        // }
     } catch (error) {
 
         return ErrorHander(500, "Get all faild");
@@ -101,7 +101,6 @@ exports.getHotelBySearchService = async (province, district, price) => {
 }
 exports.getHotelBySearchHistoryService = async (idUser, nameProvince, nameDistrict) => {
     try {
-        console.log(idUser, nameProvince, nameDistrict)
         let hotelByHistory = []
         const history = await History.find({ idUser: idUser }).sort({ createdAt: -1 })
         let min = history[0].price - 500000;
@@ -139,6 +138,60 @@ exports.getHotelBySearchHistoryService = async (idUser, nameProvince, nameDistri
         return SuccessHander(200, "Create category success", hotelByHistory);
     } catch (error) {
 
+        return ErrorHander(500, "Get all faild");
+    }
+}
+exports.getHotelByPopularService = async (nameProvince, nameDistrict) => {
+    try {
+        let result = []
+        if (nameProvince !== '' && nameProvince !== undefined) {
+            const Hotels = await Hotel.find({ "address": { "$regex": nameProvince, "$options": "i" }, countSearch: { $ne: 0 } })
+                .sort({ countSearch: -1 })
+            result = Hotels;
+            if (nameDistrict !== '' && nameDistrict !== undefined) {
+                let arr = []
+                for (var item of Hotels) {
+                    if (item.address.includes(nameDistrict)) {
+                        arr.push(item)
+                    }
+                }
+                result = arr;
+            }
+        }
+        else {
+            const Hotels = await Hotel.find({ countSearch: { $ne: 0 } })
+                .sort({ countSearch: -1 })
+            result = Hotels;
+        }
+
+        return SuccessHander(200, "Create category success", result);
+    } catch (error) {
+        console.log(error)
+        return ErrorHander(500, "Get all faild");
+    }
+}
+exports.getHotelByPositionService = async (latitude, longitude) => {
+    try {
+        let result= []
+        // console.log(latitude, longitude)
+        // await geocoder.reverse({ lat: latitude, lon: longitude }, 
+        //     async function (err, res) {
+        //     city = res[0].administrativeLevels.level1short
+        //     dist = res[0].administrativeLevels.level2short
+        // });
+        const city = 'Cần thơ'
+        const dist = 'Ninh Kiều'
+        const hotel = await Hotel.find({ "address": { "$regex": city, "$options": "i" } })
+        let arr = []
+        for (var item of hotel) {
+            if (item.address.includes(dist)) {
+                arr.push(item)
+            }
+        }
+        result = arr
+        return SuccessHander(200, "Create category success", result);
+    } catch (error) {
+        console.log(error)
         return ErrorHander(500, "Get all faild");
     }
 }

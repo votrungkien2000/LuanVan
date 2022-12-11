@@ -12,13 +12,27 @@ import ProvinceService from 'services/province.service';
 import DistrictService from 'services/district.service';
 import HotelService from 'services/hotel.service';
 import HistorySearchService from 'services/HistorySrearch.service';
+import GoogleMapReact from 'google-map-react';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const provinceService = new ProvinceService();
 const districtService = new DistrictService();
 const hotelService = new HotelService();
 const historySearchService = new HistorySearchService()
 
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
 function HomePage() {
+    // const [locationDefault, setLocationDefault] = useState({
+    //     center: {
+    //         // lat: parseFloat(latitude),
+    //         // lng: parseFloat(longitude)
+    //         lat: '11.9408842',
+    //         lng: '108.4336784'
+    //     },
+    //     zoom: 11
+    // });
     const date = new Date();
     const [province, setProvince] = useState([]);
     const [District, setDistrict] = useState([]);
@@ -28,7 +42,14 @@ function HomePage() {
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectChoose, setSelectChoose] = useState('1')
     const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [maxPagination, setMaxPagination] = useState(1);
+    const [currentPagination, setCurrentPagination] = useState(0);
     const [hotels, setHotels] = useState([]);
+    const [positionChooseHotel, setpPositionChooseHotel] = useState({
+        latitude: 11.9408842,
+        longitude: 108.433678
+    });
+
     const [chooses, setChooses] = useState([
         {
             id: 1,
@@ -45,6 +66,10 @@ function HomePage() {
         {
             id: 4,
             name: 'Sắp xếp theo giá'
+        },
+        {
+            id: 5,
+            name: 'Theo độ phổ biến'
         }
 
     ])
@@ -52,29 +77,46 @@ function HomePage() {
         try {
             const result = await hotelService.getHotelAll()
             setHotels(result.data.data)
+            const maxPage = Math.ceil(parseInt(result.data.data.length / 10) + 1);
+            setMaxPagination(maxPage)
+            setCurrentPagination(1)
         } catch (error) {
             console.log(error)
         }
+    }
+    const renderHotels = () => {
+        let list = []
+        if (currentPagination < maxPagination) {
+            for (let i = (currentPagination - 1) * 10; i < currentPagination * 10; i++) {
+                list.push(hotels[i])
+            }
+        } else {
+            for (let i = (currentPagination - 1) * 10; i < hotels.length; i++) {
+                list.push(hotels[i])
+            }
+        }
+        return list
     }
     const handleSortChange = (e) => {
         setSelectChoose(e.target.value)
         if (e.target.value === 1) {
             getHotelAll()
+            setSelectedDistrict(null)
+            setSelectedProvince(null)
         }
         if (e.target.value === 2) {
             let nameProvince = '';
             let nameDistrict = '';
-            for(var item of province){
-                if(selectedProvince === item._id){
+            for (var item of province) {
+                if (selectedProvince === item._id) {
                     nameProvince = item.nameProvince
                 }
             }
-            for(var item of District){
-                if(selectedDistrict === item._id){
+            for (var item of District) {
+                if (selectedDistrict === item._id) {
                     nameDistrict = item.nameDistrict
                 }
             }
-            console.log(nameProvince)
             getHotelBySearchHistoryUI(localStorage.getItem("id"), nameProvince, nameDistrict)
             // setSelectedProvince(null)
             // setSelectedDistrict(null)
@@ -89,10 +131,35 @@ function HomePage() {
                 a.price - b.price
             )
         }
+        if (e.target.value === 5) {
+            let nameProvince = '';
+            let nameDistrict = '';
+            for (var item of province) {
+                if (selectedProvince === item._id) {
+                    nameProvince = item.nameProvince
+                }
+            }
+            for (var item of District) {
+                if (selectedDistrict === item._id) {
+                    nameDistrict = item.nameDistrict.split(" ")[1]
+                }
+            }
+            getHotelByPopularUI(nameProvince, nameDistrict)
+        }
     }
     const getHotelBySearchHistoryUI = async (id, nameProvince, nameDistrict) => {
         const result = await hotelService.getHotelBySearchHistory(id, nameProvince, nameDistrict)
         setHotels(result.data.data)
+        const maxPage = Math.ceil(parseInt(result.data.data.length / 10) + 1);
+        setMaxPagination(maxPage)
+        setCurrentPagination(1)
+    }
+    const getHotelByPopularUI = async (nameProvince, nameDistrict) => {
+        const result = await hotelService.getHotelByPopular(nameProvince, nameDistrict)
+        setHotels(result.data.data)
+        const maxPage = Math.ceil(parseInt(result.data.data.length / 10) + 1);
+        setMaxPagination(maxPage)
+        setCurrentPagination(1)
     }
     const getDistrict = async (idProvince) => {
         try {
@@ -152,16 +219,83 @@ function HomePage() {
             }
             const result = await hotelService.getHotelBySearch(nameProvince, nameDistrict, price)
             if (result.status === 200) {
-                setHotels(result.data.data)
+                const docs = result.data.data;
+                setHotels(docs)
+                console.log(docs);
+                if (docs.length !== 0)
+                    setpPositionChooseHotel({
+                        latitude: parseFloat(docs[0].latitude),
+                        longitude: parseFloat(docs[0].longitude)
+                    })
             }
-        if(selectedProvince !== null){
-            addHistorySearch(selectedProvince, date.getMonth()+1, date.getFullYear())
-        }
+            if (selectedProvince !== null) {
+                addHistorySearch(selectedProvince, date.getMonth() + 1, date.getFullYear())
+            }
+            const maxPage = Math.ceil(parseInt(result.data.data.length / 10) + 1);
+            setMaxPagination(maxPage)
+            setCurrentPagination(1)
         } catch (error) {
             console.log("Server error")
         }
         setSelectChoose(1)
     }
+    const getPositionHotel = (item) => {
+        setpPositionChooseHotel({
+            latitude: parseFloat(item.latitude),
+            longitude: parseFloat(item.longitude)
+        })
+    }
+
+    const handleGetPosition = async () => {
+        // await clearLocation()
+        try {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                console.log(position.coords.latitude, position.coords.longitude)
+                setpPositionChooseHotel({
+                    latitude: 10.0299337,
+                    longitude: 105.7684266
+                    // latitude: parseFloat(position.coords.latitude),
+                    // longitude: parseFloat(position.coords.longitude)
+                })
+                const result = await hotelService.getHotelByPosition(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude))
+                // console.log(result.data.data)
+                setHotels(result.data.data)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // const clearLocation = () => {
+    //     var id, target, options;
+
+    //     function success(pos) {
+    //         var crd = pos.coords;
+    //         if (
+    //             target.latitude === crd.latitude &&
+    //             target.longitude === crd.longitude
+    //         ) {
+    //             // console.log("Congratulations, you reached the target");
+    //             navigator.geolocation.clearWatch(id);
+    //         }
+    //     }
+
+    //     function error(err) {
+    //         console.error("ERROR(" + err.code + "): " + err.message);
+    //     }
+
+    //     target = {
+    //         latitude: 0,
+    //         longitude: 0,
+    //     };
+
+    //     options = {
+    //         enableHighAccuracy: false,
+    //         timeout: 5000,
+    //         maximumAge: 0,
+    //     };
+
+    //     id = navigator.geolocation.watchPosition(success, error, options);
+    // };
     return (
         <div className='homePage'>
             <div className='homePage__search'>
@@ -192,7 +326,10 @@ function HomePage() {
                             <h5 style={{ fontSize: "1rem" }}>[{`${price[0]}đ`}, {`${price[1]}đ`}]</h5>
                             <Slider min={500000} max={5000000} value={price} onChange={(e) => setPrice(e.value)} range />
                         </div>
-                        <Button className='homePage__search__price__btn' style={{ border: "1px solid var(--hover)", borderRadius: "8px", height: "45px", backgroundColor: "var(--bs-btn-bg)", fontWeight: "500" }} label="Tìm kiếm" onClick={handleSearch} />
+                        <div className='homePage__search__content'>
+                            <Button className='homePage__search__price__btn' style={{ border: "1px solid var(--hover)", borderRadius: "8px", height: "45px", marginRight: "5px", backgroundColor: "var(--bs-btn-bg)", fontWeight: "500" }} label="Tìm kiếm" onClick={handleSearch} />
+                            <Button className='homePage__search__price__btn homePage__search__price__btn__localtion' style={{ border: "1px solid var(--hover)", borderRadius: "8px", height: "45px", backgroundColor: "var(--bs-btn-bg)", fontWeight: "500" }} label="Vị trí" onClick={handleGetPosition} />
+                        </div>
                     </div>
                 </div>
 
@@ -219,13 +356,49 @@ function HomePage() {
                             </Select>
                         </FormControl>
                     </div>
-                    {hotels.length !== 0 ? hotels.map((ele, index) => {
-                        return <Card key={index} hotel={ele} />
+                    {hotels.length !== 0 ? renderHotels().map((ele, index) => {
+                        return <Card onClick={() => getPositionHotel(ele)} key={index} hotel={ele} />
                     }) : <div><p className='notification'>Dữ liệu không tồn tại</p></div>}
+                    <div className='homePage__body__pagination'>
+                        <Stack spacing={2}>
+                            <Pagination count={maxPagination} page={currentPagination} onChange={(e, value) => {
+                                setCurrentPagination(value)
+                            }} />
+                        </Stack>
+                    </div>
                 </div>
                 <div className={`homePage__body_map ${showMap ? 'homePage__body_map_show' : ''}`}>
                     <div className='homePage__body__map__item'>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d825.9374710560477!2d105.77025033856712!3d10.029822370357065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0895a51d60719%3A0x9d76b0035f6d53d0!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBD4bqnbiBUaMah!5e0!3m2!1svi!2sbg!4v1664703943834!5m2!1svi!2sbg" width="100%" height="100%" style={{ border: "1px soild var(--hover)", borderRadius: "10px" }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div style={{ height: '93vh', width: '100%' }}>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{ key: "" }}
+                                center={{
+                                    lat: positionChooseHotel.latitude,
+                                    lng: positionChooseHotel.longitude
+                                }}
+                                defaultZoom={11}
+                            >
+                                {hotels.length !== 0 ? renderHotels().map((item, index) => {
+                                    return <AnyReactComponent
+                                        key={index}
+                                        lat={parseFloat(item.latitude)}
+                                        lng={parseFloat(item.longitude)}
+
+                                        text={<svg xmlns="http://www.w3.org/2000/svg" width="30" color="blue" height="30" fill="currentColor" className="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                                        </svg>}
+                                    />
+                                }) : <div></div>}
+                                <AnyReactComponent
+                                    lat={positionChooseHotel.latitude}
+                                    lng={positionChooseHotel.longitude}
+
+                                    text={<svg xmlns="http://www.w3.org/2000/svg" width="30" color="red" height="30" fill="currentColor" className="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                                    </svg>}
+                                />
+                            </GoogleMapReact>
+                        </div>
                     </div>
                 </div>
             </div>

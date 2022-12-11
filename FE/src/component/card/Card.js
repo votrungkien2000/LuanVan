@@ -57,8 +57,8 @@ function Card(props) {
     const handleHistory = async () => {
         try {
             const idUser = localStorage.getItem("id")
-            console.log(idUser, props.hotel.star, props.hotel.price)
-            const result = await History.addHistory(idUser, props.hotel.star, props.hotel.price)
+            console.log(idUser, props.hotel.star, props.hotel.price, props.hotel._id)
+            const result = await History.addHistory(idUser, props.hotel.star, props.hotel.price, props.hotel._id)
             console.log(result)
         } catch (error) {
             console.log(error)
@@ -67,9 +67,9 @@ function Card(props) {
     // console.log(status)
     // console.log(turnOn);
     return (
-        <div className="Card">
+        <div className="Card" onClick={props.onClick}>
             <div className="Card__container" onClick={handleHistory}>
-                <div style={{ backgroundImage: `url(${props.hotel.picture})` }} className='Card__container__picture'>
+                <div style={{ backgroundImage: props.hotel.picture !== undefined ? `url(${props.hotel.picture})`: 'https://www.shutterstock.com/image-vector/no-data-available-icon-vector-260nw-1645941262.jpg' }} className='Card__container__picture'>
                     {/* <img className='Card__container__picture__img' src={Picture}/> */}
                 </div>
                 <div className="Card__info">

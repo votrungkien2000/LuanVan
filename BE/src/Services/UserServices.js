@@ -3,6 +3,13 @@ const SuccessHander = require("../Utils/Notification/SuccessHander");
 const getRoomDetail = require('../Utils/scraping')
 const { CreateToken } = require('../Utils/token/token.js')
 const User = require("../Models/User");
+//saveData
+const mongodb = require("mongodb").MongoClient;
+const fastcsv = require("fast-csv");
+const fs = require("fs");
+const ws = fs.createWriteStream("bezkoder_mongodb_fastcsv.csv");
+let url = "mongodb+srv://HotelLive:590941ANh@cluster0.wsjzwi9.mongodb.net/HotelLive";
+
 
 exports.add = async (user) => {
     console.log(user)
@@ -114,6 +121,39 @@ exports.updateUser = async (user, id) => {
     try {
         console.log(user)
         await User.updateOne({ _id: id }, user)
+        return SuccessHander(200, "Create category success");
+    } catch (err) {
+        console.log(err)
+        return ErrorHander(500, "Get all faild");
+    }
+}
+exports.saveData = async (req, res) => {
+    try {
+        mongodb.connect(
+            url,
+            { useNewUrlParser: true, useUnifiedTopology: true },
+            (err, client) => {
+              if (err) throw err;
+          
+              client
+                .db("zkoder_db")
+                .collection("provinces")
+                .find({})
+                .toArray((err, data) => {
+                  if (err) throw err;
+          
+                  console.log(data);
+                  fastcsv
+                    .write(data, { headers: true })
+                    .on("finish", function() {
+                      console.log("Write to bezkoder_mongodb_fastcsv.csv successfully!");
+                    })
+                    .pipe(ws);
+          
+                  client.close();
+                });
+            }
+          );
         return SuccessHander(200, "Create category success");
     } catch (err) {
         console.log(err)
